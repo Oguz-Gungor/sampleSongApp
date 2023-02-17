@@ -1,0 +1,23 @@
+.flex-row, .flex-column{
+  display: flex;
+}
+
+.flex-row{
+  flex-direction: row;
+}
+
+.flex-column{
+  flex-direction: column;
+}
+
+.button-container{
+  margin: 0.5em;
+}
+
+.auth{
+  background-image: url("../public/background-1.jpg");
+  background-size: cover;
+  .card{
+      background-color: white;        
+  }
+}
