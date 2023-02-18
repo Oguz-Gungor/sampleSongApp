@@ -8,7 +8,7 @@ export interface ITextInputProps extends IInputProps {
 export default function TextInput(props: ITextInputProps) {
   return (
     <div className={`flex-column text-input ${props.className}`}>
-      <span>{props.label}</span>
+      {props.label && <span>{props.label}</span>}
       <input type={"text"} onChange={(event) => props.onChange && props.onChange(event.target.value)} />
     </div>
   );

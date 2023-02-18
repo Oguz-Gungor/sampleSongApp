@@ -4,7 +4,6 @@ import Card from "../../../components/Card/Card";
 import TextInput from "../../../components/Input/TextInput";
 import RouteLink from "../../../components/Link/RouteLink";
 import Page from "../../../components/Page/Page";
-import "./Login.scss";
 
 export default function Login() {
   return (

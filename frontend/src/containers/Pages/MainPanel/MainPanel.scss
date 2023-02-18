@@ -1,5 +1,25 @@
 .main {
   background-image: url("../../../../public/background-1.jpg");
   background-size: cover;
-  color: white;
+  align-items: flex-start;
+
+  .main-container {
+    padding: 2% 5%;
+    width: 100%;
+    row-gap: 1.2em;
+    .header {
+      .search-bar {
+        width: 100%;
+        padding-right: 5%;
+      }
+    }
+    .content {
+      column-gap: 1.2em;
+      .table-card {
+        width: 100%;
+        background: linear-gradient(#404040, white 10%, white 95%, #404040);
+        padding-bottom: 1.5em;
+      }
+    }
+  }
 }

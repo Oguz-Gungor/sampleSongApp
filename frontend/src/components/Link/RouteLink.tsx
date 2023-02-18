@@ -4,5 +4,12 @@ import { ILinkProps } from "../../util/CommonInterfaces";
 
 export default function RouteLink(props: ILinkProps) {
   const navigate = useNavigate();
-  return <span onClick={() => navigate(props.link)}>{props.children}</span>;
+  return (
+    <span
+      className={`route-link ${props.className}`}
+      onClick={() => navigate(props.link)}
+    >
+      {props.children}
+    </span>
+  );
 }

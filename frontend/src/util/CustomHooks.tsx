@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import * as React from "react";
 
-export function useFetch<T, K>(
+export function useFetch<T>(
   requestConfig: AxiosRequestConfig,
   reFetch = false
 ): {
