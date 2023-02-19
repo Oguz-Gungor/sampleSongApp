@@ -3,3 +3,9 @@ export const getPlaylistConfig = {
     url: "/playlists",
     headers: {},
   }
+
+  export const addPlaylistConfig = {
+    method: "post",
+    url: "/playlists",
+    headers: {},
+  }

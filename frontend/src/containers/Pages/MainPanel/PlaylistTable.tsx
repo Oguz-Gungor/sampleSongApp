@@ -6,7 +6,8 @@ import withLocalFetch from "../../../util/hocs/withRequest";
 import { IFetcherComponentProps } from "../../../util/CommonInterfaces";
 import Form from "../../../components/Input/Form";
 import TextInput from "../../../components/Input/TextInput";
-import { getPlaylistConfig } from "../../../api/Playlist";
+import { addPlaylistConfig, getPlaylistConfig } from "../../../api/Playlist";
+import { wrappedAxios } from "../../../util/UtilFunctions";
 
 const columnList = [
   { key: "name", label: "Name" },
@@ -31,8 +32,8 @@ function AddPlaylist({ setPostConfig }: IFetcherComponentProps<any[] | null>) {
     <div className={`add-row flex-row ${isClicked ? "open" : "closed"}`}>
       {isClicked ? (
         <>
-          <Form onSubmit={(formData)=>console.log(formData)}>
-            <TextInput id="playlist" placeHolder="Playlist Name"/>
+          <Form onSubmit={(formData) => setPostConfig(addPlaylistConfig)}>
+            <TextInput id="playlist" placeHolder="Playlist Name" />
           </Form>
           <span onClick={() => setIsClicked(false)}>cancel</span>
         </>
@@ -43,7 +44,4 @@ function AddPlaylist({ setPostConfig }: IFetcherComponentProps<any[] | null>) {
   );
 }
 
-export default withLocalFetch(
-  () => getPlaylistConfig,
-  PlayListTable
-);
+export default withLocalFetch(() => getPlaylistConfig, PlayListTable);
