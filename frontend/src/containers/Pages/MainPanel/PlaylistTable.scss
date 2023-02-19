@@ -4,20 +4,41 @@
       background: linear-gradient(to right, white, #1db954, white);
     }
   }
-  .add-row{
+  .add-row {
     width: 100%;
     background-color: #1db954;
     justify-content: center;
     align-items: center;
-    transition: all .3s;
+    transition: all 0.3s;
     border-radius: 1em;
-    &.closed{
-        width: 4%;
-        margin-left: 48%;
-        margin-right: 48%;
+    &.closed {
+      width: 4%;
+      margin-left: 48%;
+      margin-right: 48%;
     }
-    &.open{
-        justify-content: space-between;
+    &.open {
+      justify-content: space-between;
+    }
+    form {
+      width: 100%;
+      .form-elements-container {
+        display: flex;
+        flex-direction: row;
+        .text-input {
+          width: 100%;
+          input {
+            background-color: #1db954;
+            border-bottom-left-radius: 1em;
+            border-top-left-radius: 1em;
+            padding-left: 1em;
+            padding-right: 1em;
+            height: 100%;
+          }
+        }
+        .submit-button {
+          margin-left: auto;
+        }
+      }
     }
   }
 }

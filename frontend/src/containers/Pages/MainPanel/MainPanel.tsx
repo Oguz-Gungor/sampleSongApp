@@ -4,6 +4,7 @@ import InfoCard from "../../../components/InformationElements/InfoCard";
 import SearchBar from "../../../components/Input/SearchBar";
 import RouteLink from "../../../components/Link/RouteLink";
 import Page from "../../../components/Page/Page";
+import { env } from "../../../util/tempConfig";
 import "./MainPanel.scss";
 import PlayListTable from "./PlaylistTable";
 
@@ -13,7 +14,12 @@ export default function MainPanel() {
       <div className="flex-column main-container">
         <div className="flex-row header">
           <SearchBar list={[]} filterAttributes={[]} callback={() => {}} />
-          <RouteLink link="/login">logout</RouteLink>
+          <RouteLink
+            link="/login"
+            callback={() => window.sessionStorage.removeItem(env.TOKEN_KEY)}
+          >
+            logout
+          </RouteLink>
         </div>
         <div className="flex-row content">
           <Card className="table-card">

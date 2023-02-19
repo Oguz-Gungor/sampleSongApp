@@ -1,5 +1,8 @@
 import express, { Express, Request, Response } from "express";
-var cors = require("cors");
+import cors from "cors";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+
 const app: Express = express();
 const port = 3000;
 
@@ -40,6 +43,25 @@ const tracks: { [key: number]: any } = {
   ],
 };
 
+const users = [
+  {
+    id: "1",
+    username: "oguz",
+    password: bcrypt.hashSync("123", 8),
+  },
+  {
+    id: "2",
+    username: "mustafa",
+    password: bcrypt.hashSync("456", 8),
+  },
+];
+const sampleToken = "token";
+
+const env = {
+  API_SECRET: "123",
+  TOKEN_EXPIRE: 10,
+};
+
 app.use(cors());
 app.get("/", async (req: Request, res: Response) => {
   res.send({ name: "Hello, this is Express + TypeScript" });
@@ -50,15 +72,54 @@ app.get("/playlists", async (req: Request, res: Response) => {
 });
 
 app.post("/playlists", async (req: Request, res: Response) => {
-    console.log("playlists")
-    res.send([]);
-  });
+  console.log("playlists");
+  res.send([]);
+});
 
 app.get("/tracks", async (req: Request, res: Response) => {
   const playlistId = req.query.id as string;
   res.send(tracks[parseInt(playlistId)]);
 });
 
+app.get("/login", async (req: Request, res: Response) => {
+  const requestUsername = req.query.username as string;
+  const requestPassword = req.query.password as string;
+  const user = checkUser(requestUsername, requestPassword);
+  if (user != null) {
+    const token = generateToken(user.id);
+    res.send(token);
+  } else {
+    res.status(403).send("invalid credentials");
+  }
+});
+
+app.get("/validate", async (req: Request, res: Response) => {
+  const token = sampleToken;
+  if (validateToken(token)) {
+    res.send(token);
+  } else {
+    res.status(403).send("Invalid token");
+  }
+});
+
 app.listen(port, () => {
   console.log(`[Server]: I am running at https://localhost:${port}`);
 });
+
+const checkUser = (requestUsername: string, requestPassword: string) => {
+  return users.find(({ username, password }) => {
+    console.log(password);
+    console.log(username);
+    return (
+      requestUsername == username &&
+      bcrypt.compareSync(requestPassword, password)
+    );
+  });
+};
+
+const generateToken = (id: string) => {
+  return jwt.sign({ id }, env.API_SECRET, { expiresIn: env.TOKEN_EXPIRE });
+};
+const validateToken = (token: string) => {
+  return true;
+};

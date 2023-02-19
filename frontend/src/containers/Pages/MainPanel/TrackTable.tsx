@@ -1,4 +1,5 @@
 import * as React from "react";
+import { getTracksConfig } from "../../../api/Tracks";
 import Table from "../../../components/InformationElements/Table";
 import { IFetcherComponentProps } from "../../../util/CommonInterfaces";
 import withLocalFetch from "../../../util/hocs/withRequest";
@@ -27,10 +28,6 @@ function TrackTable(props: IFetcherComponentProps<any[]>) {
 }
 
 export default withLocalFetch<ITrackTableProps, any[]>(
-  ({ playlistId }) => ({
-    method: "get",
-    url: `/tracks?id=${playlistId}`,
-    headers: {},
-  }),
+  getTracksConfig,
   TrackTable
 );

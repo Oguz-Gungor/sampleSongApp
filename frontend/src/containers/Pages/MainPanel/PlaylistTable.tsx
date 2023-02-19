@@ -4,6 +4,9 @@ import TrackTable from "./TrackTable";
 import "./PlaylistTable.scss";
 import withLocalFetch from "../../../util/hocs/withRequest";
 import { IFetcherComponentProps } from "../../../util/CommonInterfaces";
+import Form from "../../../components/Input/Form";
+import TextInput from "../../../components/Input/TextInput";
+import { getPlaylistConfig } from "../../../api/Playlist";
 
 const columnList = [
   { key: "name", label: "Name" },
@@ -28,25 +31,9 @@ function AddPlaylist({ setPostConfig }: IFetcherComponentProps<any[] | null>) {
     <div className={`add-row flex-row ${isClicked ? "open" : "closed"}`}>
       {isClicked ? (
         <>
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-            }}
-          >
-            <input type={"text"} id="playlist" />
-            <input type={"submit"} />
-          </form>
-          <span
-            onClick={() =>
-              setPostConfig({
-                method: "post",
-                url: "/playlists",
-                headers: {},
-              })
-            }
-          >
-            "AddRow"
-          </span>
+          <Form onSubmit={(formData)=>console.log(formData)}>
+            <TextInput id="playlist" placeHolder="Playlist Name"/>
+          </Form>
           <span onClick={() => setIsClicked(false)}>cancel</span>
         </>
       ) : (
@@ -57,10 +44,6 @@ function AddPlaylist({ setPostConfig }: IFetcherComponentProps<any[] | null>) {
 }
 
 export default withLocalFetch(
-  () => ({
-    method: "get",
-    url: "/playlists",
-    headers: {},
-  }),
+  () => getPlaylistConfig,
   PlayListTable
 );
