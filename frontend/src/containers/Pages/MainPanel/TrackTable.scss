@@ -1,0 +1,9 @@
+.track-table {
+  background: linear-gradient(#404040, black);
+  color: white;
+  .row {
+    &:hover {
+      background: linear-gradient(to right, black, #1db954, black)!important;
+    }
+  }
+}

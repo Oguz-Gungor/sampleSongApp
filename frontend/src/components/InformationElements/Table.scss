@@ -7,7 +7,7 @@
   }
   .header {
     border-width: 0;
-    border-bottom: 2px;
+    border-bottom: .1em;
     border-style: solid;
     border-color: #1db954;
 
@@ -17,9 +17,7 @@
   }
   .row {
     cursor: pointer;
-    &:hover {
-      background: linear-gradient(to right, white, #1db954, white);
-    }
+    
     td {
       padding-top: 0.5em;
     }

@@ -5,20 +5,45 @@
 
   .main-container {
     padding: 2% 5%;
-    width: 100%;
+    width: 90%;
     row-gap: 1.2em;
     .header {
       .search-bar {
-        width: 100%;
         padding-right: 5%;
+        width: 100%;
+        input {
+          transition: width 0.3s;
+          width: 5%;
+          &:focus-within{
+            width: 100%;
+          }
+        }
+      }
+      .route-link {
+        margin-left: auto;
       }
     }
     .content {
       column-gap: 1.2em;
-      .table-card {
-        width: 100%;
+      .table-card,
+      .anthem-card {
         background: linear-gradient(#404040, white 10%, white 95%, #404040);
         padding-bottom: 1.5em;
+        padding-top: 1.5em;
+      }
+      .table-card {
+        width: 70%;
+        height: min-content;
+      }
+      .anthem-card {
+        width: 30%;
+        .info-card-header {
+          border-color: #1db954;
+        }
+        .info-card-label {
+          background: linear-gradient(to right, white, #1db954, white);
+          color: white;
+        }
       }
     }
   }

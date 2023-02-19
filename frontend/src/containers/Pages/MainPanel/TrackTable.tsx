@@ -1,5 +1,8 @@
 import * as React from "react";
 import Table from "../../../components/InformationElements/Table";
+import { IFetcherComponentProps } from "../../../util/CommonInterfaces";
+import withLocalFetch from "../../../util/hocs/withRequest";
+import "./TrackTable.scss";
 
 const columnList = [
   { key: "track", label: "Track" },
@@ -7,20 +10,27 @@ const columnList = [
   { key: "artist", label: "Artist" },
 ];
 
-const rows = [
-  {
-    track: "Under A Violet Moon",
-    album: "Under A Violet Moon",
-    artist: "Blackmore's Night",
-  },
-  { track: "City of the Dead", album: "Arcadia", artist: "Eurielle" },
-];
+interface ITrackTableProps extends JSX.IntrinsicAttributes {
+  playlistId: number;
+}
 
-export default function TrackTable() {
+function TrackTable(props: IFetcherComponentProps<any[]>) {
   return (
     <Table
-      rows={rows}
+      className="track-table"
+      rows={props.payload}
       columnList={columnList}
+      searchAttributes={columnList.map(({ key }) => key)}
+      expandRenderer={(row) => <div>setAnthem,remove</div>}
     />
   );
 }
+
+export default withLocalFetch<ITrackTableProps, any[]>(
+  ({ playlistId }) => ({
+    method: "get",
+    url: `/tracks?id=${playlistId}`,
+    headers: {},
+  }),
+  TrackTable
+);
