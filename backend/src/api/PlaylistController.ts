@@ -1,13 +1,15 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import PlaylistService from "../service/PlaylistService";
-import { wrapServiceResponse } from "./ControllerUtil";
+import { withErrorHandler, wrapServiceResponse } from "./ControllerUtil";
 
-const getPlaylists = async (req: Request, res: Response) => {
-  wrapServiceResponse(res, PlaylistService.getPlaylists());
-};
+const getPlaylists = async (req: Request, res: Response, next: NextFunction) =>
+  withErrorHandler(() => {
+    wrapServiceResponse(res, PlaylistService.getPlaylists());
+  }, next);
 
-const addPlaylist = async (req: Request, res: Response) => {
-  res.send([]);
-};
+const addPlaylist = async (req: Request, res: Response, next: NextFunction) =>
+  withErrorHandler(() => {
+    res.send([]);
+  }, next);
 
 export default { getPlaylists, addPlaylist };

@@ -9,3 +9,15 @@ export const wrapServiceResponse = (
 
   res.status(status).send(dto);
 };
+
+export const withErrorHandler = (
+  callback: () => any,
+  errorHandleCallback: (error: any) => void,
+) => {
+  try {
+    callback();
+  } catch (err) {
+    errorHandleCallback(err);
+  }
+};
+

@@ -13,4 +13,14 @@ const requestLogger = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-export default { requestLogger };
+const errorLogger = (
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  logger.error("error : " + err);
+  next();
+};
+
+export default { requestLogger, errorLogger };

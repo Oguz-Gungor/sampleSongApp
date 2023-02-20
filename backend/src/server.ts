@@ -1,6 +1,6 @@
 import express, {
   Express,
-  RequestHandler,
+  RequestHandler
 } from "express";
 import cors from "cors";
 import AuthController from "./api/AuthController";
@@ -48,14 +48,8 @@ app.use(
 );
 
 //playlist loader
-app.get(
-  "/playlists",
-  PlaylistController.getPlaylists
-);
-app.post(
-  "/playlists",
-  PlaylistController.addPlaylist
-);
+app.get("/playlists", PlaylistController.getPlaylists);
+app.post("/playlists", PlaylistController.addPlaylist);
 
 //tracks loader
 app.get("/tracks", TrackController.getTracks);
@@ -68,6 +62,7 @@ app.post(
 //login loader
 app.get("/login", AuthController.login);
 app.get("/validate", AuthController.validate);
+app.use(LoggingMiddleware.errorLogger);
 
 app.listen(process.env.PORT, () => {
   console.log(
