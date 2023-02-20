@@ -1,10 +1,12 @@
-import axios, { AxiosRequestConfig } from "axios";
 import * as React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { AxiosRequestConfig } from "axios";
 import { useNavigate } from "react-router-dom";
 import { removeToken, wrappedAxios } from "./UtilFunctions";
+import RequestReducer from "../redux/RequestReducer";
 
 /**
- * Returned structure of useLocalFetch hook 
+ * Returned structure of useLocalFetch hook
  */
 interface ILocalFetchHookResult<T> {
   /**
@@ -37,14 +39,60 @@ export function useLocalFetch<T>(
   getRequestConfig: AxiosRequestConfig,
   reFetch = false
 ): ILocalFetchHookResult<T> {
-  const navigate = useNavigate();
   // latest response payload
   const [payload, setPayload] = React.useState<T | null>(null);
   // current pending status
   const [isLoading, setLoading] = React.useState<boolean>(false);
   //latest error message
   const [error, setError] = React.useState<string | null>(null);
-  // latest axios post config to trigger hook to use post request and update attributes respect to request cycle 
+
+  const { setPostConfig } = useFetch(
+    getRequestConfig,
+    setLoading,
+    setPayload,
+    setError,
+    reFetch
+  );
+
+  return { payload, isLoading, error, setPostConfig };
+}
+
+export function useReduxFetch(
+  getRequestConfig: AxiosRequestConfig,
+  selectorFunction: (state: any) => any,
+  action: any,
+  reFetch = false
+) {
+  const temp= useSelector(selectorFunction);
+  console.log(temp);
+  const { payload, isLoading, error } = temp;
+  const dispatch = useDispatch();
+  const setLoading = () => dispatch({ type: RequestReducer.pending(action) });
+  const setPayload = (data: any) =>
+    dispatch({ type: RequestReducer.success(action), payload: data });
+  const setError = (data: any) =>
+    dispatch({ type: RequestReducer.error(action), payload: data });
+
+  const { setPostConfig } = useFetch(
+    getRequestConfig,
+    setLoading,
+    setPayload,
+    setError,
+    reFetch
+  );
+
+  return { payload, isLoading, error, setPostConfig };
+}
+
+const useFetch = (
+  getRequestConfig: AxiosRequestConfig,
+  setLoading: any,
+  setPayload: any,
+  setError: any,
+  reFetch = false
+) => {
+  const navigate = useNavigate();
+  // latest axios post config to trigger hook to use post request and update attributes respect to request cycle
   const [postConfig, setPostConfig] = React.useState<AxiosRequestConfig | null>(
     null
   );
@@ -63,7 +111,7 @@ export function useLocalFetch<T>(
 
   /**
    * To handle request and update hook internals respect to request cycle states
-   * @param specifiedResutConfig 
+   * @param specifiedResutConfig
    */
   const handleRequest = (specifiedResutConfig: AxiosRequestConfig) => {
     setLoading(true);
@@ -83,6 +131,5 @@ export function useLocalFetch<T>(
         setLoading(false);
       });
   };
-
-  return { payload, isLoading, error, setPostConfig };
-}
+  return { setPostConfig };
+};

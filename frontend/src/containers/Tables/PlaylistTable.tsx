@@ -1,12 +1,14 @@
 import * as React from "react";
-import Table from "../../../components/InformationElements/Table";
 import TrackTable from "./TrackTable";
 import "./PlaylistTable.scss";
-import withLocalFetch from "../../../util/hocs/withRequest";
-import { IFetcherComponentProps } from "../../../util/CommonInterfaces";
-import Form from "../../../components/Input/Form";
-import TextInput from "../../../components/Input/TextInput";
-import { addPlaylistConfig, getPlaylistConfig } from "../../../api/Playlist";
+import { IFetcherComponentProps } from "../../util/CommonInterfaces";
+import { addPlaylistConfig, getPlaylistConfig } from "../../api/Playlist";
+import Form from "../../components/Input/Form";
+import TextInput from "../../components/Input/TextInput";
+import Table from "../../components/InformationElements/Table";
+import withLocalFetch from "../../util/hocs/withLocalFetch";
+import withReduxFetch from "../../util/hocs/withReduxFetch";
+import RequestReducer from "../../redux/RequestReducer";
 
 /**
  * list of columns in playlist table
@@ -64,4 +66,12 @@ function AddPlaylist({ setPostConfig }: IFetcherComponentProps<any[] | null>) {
  * Table to display list of playlists fetched from backend
  */
 // export table inside withLocalFetch higher order component to commit related request and retrieve response in props data
-export default withLocalFetch(() => getPlaylistConfig, PlayListTable);
+// export default withLocalFetch(() => getPlaylistConfig, PlayListTable);
+export default withReduxFetch(
+  () => getPlaylistConfig,
+  (state) => {
+    return state.request.playlists;
+  },
+  RequestReducer.ActionType.PLAYLISTS,
+  PlayListTable
+);

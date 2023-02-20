@@ -1,8 +1,8 @@
 import * as React from "react";
-import { getTracksConfig } from "../../../api/Tracks";
-import Table from "../../../components/InformationElements/Table";
-import { IFetcherComponentProps } from "../../../util/CommonInterfaces";
-import withLocalFetch from "../../../util/hocs/withRequest";
+import { getTracksConfig } from "../../api/Tracks";
+import Table from "../../components/InformationElements/Table";
+import { IFetcherComponentProps } from "../../util/CommonInterfaces";
+import withLocalFetch from "../../util/hocs/withLocalFetch";
 import "./TrackTable.scss";
 
 /**

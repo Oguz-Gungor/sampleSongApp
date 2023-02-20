@@ -1,33 +1,33 @@
 import * as React from "react";
+import { useDispatch } from "react-redux";
 import Card from "../../../components/Card/Card";
 import InfoCard from "../../../components/InformationElements/InfoCard";
+import Popup from "../../../components/InformationElements/Popup";
 import SearchBar from "../../../components/Input/SearchBar";
 import RouteLink from "../../../components/Link/RouteLink";
 import Page from "../../../components/Page/Page";
 import { removeToken } from "../../../util/UtilFunctions";
+import PlaylistTable from "../../Tables/PlaylistTable";
 import "./MainPanel.scss";
-import PlayListTable from "./PlaylistTable";
 
 /**
  * Main page container to display Main page elements(Playlist table, Info card, SearchBar , etc.)
  * @returns Main page container
  */
 export default function MainPanel() {
+
   return (
     <Page className="main">
       <div className="flex-column main-container">
         <div className="flex-row header">
           <SearchBar list={[]} filterAttributes={[]} callback={() => {}} />
-          <RouteLink
-            link="/login"
-            callback={removeToken}
-          >
+          <RouteLink link="/login" callback={removeToken}>
             logout
           </RouteLink>
         </div>
         <div className="flex-row content">
           <Card className="table-card">
-            <PlayListTable />
+            <PlaylistTable />
           </Card>
           <InfoCard
             className="anthem-card"

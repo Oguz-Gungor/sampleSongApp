@@ -7,11 +7,13 @@ import Register from "./containers/Pages/Register/Register";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/*" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/main" element={<MainPanel />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/*" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/main" element={<MainPanel />} />
+      </Routes>
+    </>
   );
 }
 
