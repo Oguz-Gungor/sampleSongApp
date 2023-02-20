@@ -3,22 +3,22 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export const users = [
-    {
-      id: "1",
-      username: "oguz",
-      password: bcrypt.hashSync("123", 8),
-    },
-    {
-      id: "2",
-      username: "mustafa",
-      password: bcrypt.hashSync("456", 8),
-    },
-  ];
+  {
+    id: "1",
+    username: "oguz",
+    password: bcrypt.hashSync("123", 8),
+  },
+  {
+    id: "2",
+    username: "mustafa",
+    password: bcrypt.hashSync("456", 8),
+  },
+];
 
-const login = (
+const login = async (
   requestUsername: string,
   requestPassword: string
-): IRequestInterface<string> => {
+): Promise<IRequestInterface<string>> => {
   const user = checkUser(requestUsername, requestPassword);
   if (user != null) {
     const token = generateToken(user.id);
@@ -43,4 +43,4 @@ const generateToken = (id: string) => {
   });
 };
 
-export default {login}
+export default { login };

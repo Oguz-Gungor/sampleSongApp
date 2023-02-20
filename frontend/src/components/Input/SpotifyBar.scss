@@ -1,0 +1,14 @@
+.spotify-bar {
+  padding-right: 5%;
+  width: 100%;
+  input {
+    transition: width 0.3s;
+    width: 35%;
+    &:focus-within {
+      width: 100%;
+    }
+  }
+  .extend-wrapper{
+    height: 0;
+  }
+}

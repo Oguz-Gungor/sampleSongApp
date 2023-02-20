@@ -1,7 +1,4 @@
-import express, {
-  Express,
-  RequestHandler
-} from "express";
+import express, { Express, RequestHandler } from "express";
 import cors from "cors";
 import AuthController from "./api/AuthController";
 import dotenv from "dotenv";
@@ -10,12 +7,16 @@ import PlaylistController from "./api/PlaylistController";
 import AuthMiddleware from "./middlewares/AuthMiddleware";
 import SpotifyMiddleware from "./middlewares/SpotifyMiddleware";
 import LoggingMiddleware from "./middlewares/LoggingMiddleware";
-
+import SpotifyController from "./api/SpotifyController";
+import BodyParser from "body-parser"
 dotenv.config();
 
 const app: Express = express();
 
 app.use(cors());
+app.use(BodyParser.urlencoded({ extended: true }));
+app.use(BodyParser.json());
+app.use(BodyParser.raw());
 
 //middleware loader
 interface IExcludedRequest {
@@ -63,6 +64,9 @@ app.post(
 app.get("/login", AuthController.login);
 app.get("/validate", AuthController.validate);
 app.use(LoggingMiddleware.errorLogger);
+
+//spotify loader
+app.get("/spotifyToken", SpotifyController.spotifyToken);
 
 app.listen(process.env.PORT, () => {
   console.log(

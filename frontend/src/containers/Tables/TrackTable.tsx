@@ -9,7 +9,7 @@ import "./TrackTable.scss";
  * list of columns in track table
  */
 //todo : define interface
-const columnList = [
+export const columnList = [
   { key: "track", label: "Track" },
   { key: "album", label: "Album" },
   { key: "artist", label: "Artist" },

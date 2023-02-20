@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { useNavigate } from "react-router-dom";
 import { removeToken, wrappedAxios } from "./UtilFunctions";
 import RequestReducer from "../redux/RequestReducer";
@@ -37,6 +37,7 @@ interface ILocalFetchHookResult<T> {
  */
 export function useLocalFetch<T>(
   getRequestConfig: AxiosRequestConfig,
+  wrap = true,
   reFetch = false
 ): ILocalFetchHookResult<T> {
   // latest response payload
@@ -51,6 +52,7 @@ export function useLocalFetch<T>(
     setLoading,
     setPayload,
     setError,
+    wrap,
     reFetch
   );
 
@@ -61,11 +63,10 @@ export function useReduxFetch(
   getRequestConfig: AxiosRequestConfig,
   selectorFunction: (state: any) => any,
   action: any,
+  wrap = true,
   reFetch = false
 ) {
-  const temp = useSelector(selectorFunction);
-  console.log(temp);
-  const { payload, isLoading, error } = temp;
+  const { payload, isLoading, error } = useSelector(selectorFunction);
   const dispatch = useDispatch();
   const setLoading = (data: any) =>
     dispatch({ type: RequestReducer.pending(action), payload: data });
@@ -79,6 +80,7 @@ export function useReduxFetch(
     setLoading,
     setPayload,
     setError,
+    wrap,
     reFetch
   );
 
@@ -90,6 +92,7 @@ const useFetch = (
   setLoading: any,
   setPayload: any,
   setError: any,
+  wrap = true,
   reFetch = false
 ) => {
   const navigate = useNavigate();
@@ -114,10 +117,11 @@ const useFetch = (
    * To handle request and update hook internals respect to request cycle states
    * @param specifiedResutConfig
    */
-  const handleRequest = (specifiedResutConfig: AxiosRequestConfig) => {
+  const handleRequest = (specifiedResultConfig: AxiosRequestConfig) => {
     setLoading(true);
     setError(null);
-    wrappedAxios(specifiedResutConfig)
+    const requestFunction = wrap ? wrappedAxios : axios;
+    requestFunction(specifiedResultConfig)
       .then((response) => {
         setPayload(response.data);
       })

@@ -8,17 +8,7 @@
     width: 90%;
     row-gap: 1.2em;
     .header {
-      .search-bar {
-        padding-right: 5%;
-        width: 100%;
-        input {
-          transition: width 0.3s;
-          width: 5%;
-          &:focus-within{
-            width: 100%;
-          }
-        }
-      }
+      z-index: 1;
       .route-link {
         margin-left: auto;
       }

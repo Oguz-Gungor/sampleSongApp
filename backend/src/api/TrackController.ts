@@ -10,7 +10,7 @@ const getTracks = async (req: Request, res: Response, next: NextFunction) =>
 
 const addTrack = async (req: Request, res: Response, next: NextFunction) =>
   withErrorHandler(() => {
-    res.send();
+    res.send("add track");
   }, next);
 
 export default { getTracks, addTrack };

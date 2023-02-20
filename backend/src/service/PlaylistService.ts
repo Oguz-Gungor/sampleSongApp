@@ -14,7 +14,7 @@ const playlists = [
   },
 ];
 
-const getPlaylists = (): IRequestInterface<IPlaylist[]> => {
+const getPlaylists = async (): Promise<IRequestInterface<IPlaylist[]>> => {
   return { status: 200, dto: playlists };
 };
 

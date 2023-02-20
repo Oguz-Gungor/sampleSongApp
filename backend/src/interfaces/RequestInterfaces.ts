@@ -1,4 +1,4 @@
 export interface IRequestInterface<T> {
   status: number;
-  dto: T | string;
+  dto: T | string | null | undefined;
 }

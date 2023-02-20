@@ -1,7 +1,9 @@
 import { IRequestInterface } from "../interfaces/RequestInterfaces";
 import { ITrack, tracks } from "../model/Track";
 
-const getTracks = (playlistId: number): IRequestInterface<ITrack[]> => {
+const getTracks = async (
+  playlistId: number
+): Promise<IRequestInterface<ITrack[]>> => {
   const fetchedTracks = tracks[playlistId];
   if (fetchedTracks == null) {
     //todo : log invalid playlist id

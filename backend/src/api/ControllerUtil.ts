@@ -1,23 +1,22 @@
 import { Response } from "express";
 import { IRequestInterface } from "../interfaces/RequestInterfaces";
 
-export const wrapServiceResponse = (
-    res: Response,
-  serviceResponse: IRequestInterface<any>
+export const wrapServiceResponse = async (
+  res: Response,
+  serviceResponse: Promise<IRequestInterface<any>>
 ) => {
-  const { status, dto } = serviceResponse;
+  const { status, dto } = await serviceResponse;
 
   res.status(status).send(dto);
 };
 
-export const withErrorHandler = (
+export const withErrorHandler = async (
   callback: () => any,
-  errorHandleCallback: (error: any) => void,
+  errorHandleCallback: (error: any) => void
 ) => {
   try {
-    callback();
+    await callback();
   } catch (err) {
     errorHandleCallback(err);
   }
 };
-

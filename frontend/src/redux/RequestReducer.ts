@@ -1,13 +1,24 @@
 enum ActionType {
   PLAYLISTS,
+  SPOTIFY_TOKEN,
 }
 
+const elementInitialState = { isLoading: false, error: null, payload: [] };
+
 const initialState: IRequestContentInitialState = {
-  playlists: { isLoading: false, error: null, payload: [] },
+  playlists: elementInitialState,
+  spotifyToken: elementInitialState,
 };
 
+interface IRequestElementState {
+  isLoading: boolean;
+  error: string | null;
+  payload: any;
+}
+
 interface IRequestContentInitialState {
-  playlists: { isLoading: boolean; error: string | null; payload: any[] };
+  playlists: IRequestElementState;
+  spotifyToken: IRequestElementState;
 }
 
 const reducer = (
@@ -16,7 +27,10 @@ const reducer = (
 ) => {
   switch (action.type) {
     case pending(ActionType.PLAYLISTS):
-      return { ...state, playlists: { ...state.playlists, isLoading: action.payload} };
+      return {
+        ...state,
+        playlists: { ...state.playlists, isLoading: action.payload },
+      };
     case error(ActionType.PLAYLISTS):
       return {
         ...state,
@@ -30,6 +44,27 @@ const reducer = (
         ...state,
         playlists: {
           ...state.playlists,
+          payload: action.payload,
+        },
+      };
+    case pending(ActionType.SPOTIFY_TOKEN):
+      return {
+        ...state,
+        spotifyToken: { ...state.spotifyToken, isLoading: action.payload },
+      };
+    case error(ActionType.SPOTIFY_TOKEN):
+      return {
+        ...state,
+        spotifyToken: {
+          ...state.spotifyToken,
+          error: action.payload,
+        },
+      };
+    case success(ActionType.SPOTIFY_TOKEN):
+      return {
+        ...state,
+        spotifyToken: {
+          ...state.spotifyToken,
           payload: action.payload,
         },
       };

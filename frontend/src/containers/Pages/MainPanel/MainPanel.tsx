@@ -9,18 +9,26 @@ import Page from "../../../components/Page/Page";
 import { removeToken } from "../../../util/UtilFunctions";
 import PlaylistTable from "../../Tables/PlaylistTable";
 import "./MainPanel.scss";
+import SpotifyWebApi from "spotify-web-api-node";
+import { useReduxFetch } from "../../../util/CustomHooks";
+import RequestReducer from "../../../redux/RequestReducer";
+import { spotifyToken } from "../../../api/Spotify";
+import SpotifyBar from "../../../components/Input/SpotifyBar";
+
 
 /**
  * Main page container to display Main page elements(Playlist table, Info card, SearchBar , etc.)
  * @returns Main page container
  */
 export default function MainPanel() {
-
+  const {payload,error,isLoading} = useReduxFetch(spotifyToken,(state) => 
+     state.request.spotifyToken
+  ,RequestReducer.ActionType.SPOTIFY_TOKEN);
   return (
     <Page className="main">
       <div className="flex-column main-container">
         <div className="flex-row header">
-          <SearchBar list={[]} filterAttributes={[]} callback={() => {}} />
+          <SpotifyBar className="spotify-bar"/>
           <RouteLink link="/login" callback={removeToken}>
             logout
           </RouteLink>
