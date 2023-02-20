@@ -36,18 +36,14 @@ interface ILoginStateStruct {
  * @returns Login page container
  */
 export default function Login() {
-  /**
-   * state and dispatcher to contain current authentication status
-   */
+  //state and dispatcher to contain current authentication status
   const [loginStatus, setLoginStatus] = React.useState<ILoginStateStruct>({
     status: LoginStatus.CHECKING,
   });
 
   const navigate = useNavigate();
 
-  /**
-   * If auth token exists on container load, validate existing token. Else, set current status as INITIAL(Unauthenticated)
-   */
+  // If auth token exists on container load, validate existing token. Else, set current status as INITIAL(Unauthenticated)
   React.useEffect(() => {
     if (window.sessionStorage.getItem(env.TOKEN_KEY) == null) {
       setLoginStatus({ status: LoginStatus.INITIAL });
@@ -56,9 +52,7 @@ export default function Login() {
     }
   }, []);
 
-  /**
-   * If login status changed to success, opens main container
-   */
+  // If login status changed to success, opens main container
   React.useEffect(() => {
     if (loginStatus.status === LoginStatus.SUCCESS) {
       navigate("/main");

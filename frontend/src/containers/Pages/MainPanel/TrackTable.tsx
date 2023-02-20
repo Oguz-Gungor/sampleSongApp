@@ -40,8 +40,9 @@ function TrackTable(props: IFetcherComponentProps<any[]>) {
 }
 
 /**
- * export table inside withLocalFetch higher order component to commit related request and retrieve response in props data
+ * Table to display list of tracks fetched from backend in given playlist
  */
+//export table inside withLocalFetch higher order component to commit related request and retrieve response in props data
 export default withLocalFetch<ITrackTableProps, any[]>(
   getTracksConfig,
   TrackTable

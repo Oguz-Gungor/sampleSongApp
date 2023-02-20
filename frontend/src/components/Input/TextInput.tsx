@@ -3,7 +3,6 @@ import { IInputProps } from "../../util/CommonInterfaces";
 import "./TextInput.scss";
 
 export interface ITextInputProps extends IInputProps {
-  id?: string;
   onChange?: (value: string) => void;
   placeHolder?: string;
   //todo : enum

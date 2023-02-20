@@ -40,12 +40,15 @@ function PlayListTable(props: IFetcherComponentProps<any[] | null>) {
  * @returns Add row element view
  */
 function AddPlaylist({ setPostConfig }: IFetcherComponentProps<any[] | null>) {
+  //State for whether add button is clicked or not
   const [isClicked, setIsClicked] = React.useState(false);
   return (
     <div className={`add-row flex-row ${isClicked ? "open" : "closed"}`}>
       {isClicked ? (
         <>
-          <Form onSubmit={(formData) => setPostConfig(addPlaylistConfig(formData))}>
+          <Form
+            onSubmit={(formData) => setPostConfig(addPlaylistConfig(formData))}
+          >
             <TextInput id="playlist" placeHolder="Playlist Name" />
           </Form>
           <span onClick={() => setIsClicked(false)}>cancel</span>
@@ -58,6 +61,7 @@ function AddPlaylist({ setPostConfig }: IFetcherComponentProps<any[] | null>) {
 }
 
 /**
- * export table inside withLocalFetch higher order component to commit related request and retrieve response in props data
+ * Table to display list of playlists fetched from backend
  */
+// export table inside withLocalFetch higher order component to commit related request and retrieve response in props data
 export default withLocalFetch(() => getPlaylistConfig, PlayListTable);
