@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import * as React from "react";
-import { wrappedAxios } from "./UtilFunctions";
+import { useNavigate } from "react-router-dom";
+import { removeToken, wrappedAxios } from "./UtilFunctions";
 
 export function useLocalFetch<T>(
   getRequestConfig: AxiosRequestConfig,
@@ -13,6 +14,7 @@ export function useLocalFetch<T>(
     React.SetStateAction<AxiosRequestConfig<any> | null>
   >;
 } {
+  const navigate = useNavigate();
   const [payload, setPayload] = React.useState<T | null>(null);
   const [isLoading, setLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -37,6 +39,10 @@ export function useLocalFetch<T>(
         setPayload(response.data);
       })
       .catch((error) => {
+        if(error.response.status === 403){
+          removeToken();
+          navigate("/login")
+        }
         setError(error);
       })
       .finally(() => {

@@ -4,10 +4,14 @@ import InfoCard from "../../../components/InformationElements/InfoCard";
 import SearchBar from "../../../components/Input/SearchBar";
 import RouteLink from "../../../components/Link/RouteLink";
 import Page from "../../../components/Page/Page";
-import { env } from "../../../util/tempConfig";
+import { removeToken } from "../../../util/UtilFunctions";
 import "./MainPanel.scss";
 import PlayListTable from "./PlaylistTable";
 
+/**
+ * Main page container to display Main page elements(Playlist table, Info card, SearchBar , etc.)
+ * @returns Main page container
+ */
 export default function MainPanel() {
   return (
     <Page className="main">
@@ -16,7 +20,7 @@ export default function MainPanel() {
           <SearchBar list={[]} filterAttributes={[]} callback={() => {}} />
           <RouteLink
             link="/login"
-            callback={() => window.sessionStorage.removeItem(env.TOKEN_KEY)}
+            callback={removeToken}
           >
             logout
           </RouteLink>

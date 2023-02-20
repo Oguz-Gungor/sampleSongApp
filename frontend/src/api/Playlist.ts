@@ -4,8 +4,8 @@ export const getPlaylistConfig = {
     headers: {},
   }
 
-  export const addPlaylistConfig = {
+  export const addPlaylistConfig =(playlist:any)=> ({
     method: "post",
     url: "/playlists",
     headers: {},
-  }
+  })

@@ -7,13 +7,21 @@ import { IFetcherComponentProps } from "../../../util/CommonInterfaces";
 import Form from "../../../components/Input/Form";
 import TextInput from "../../../components/Input/TextInput";
 import { addPlaylistConfig, getPlaylistConfig } from "../../../api/Playlist";
-import { wrappedAxios } from "../../../util/UtilFunctions";
 
+/**
+ * list of columns in playlist table
+ */
+//todo : define interface
 const columnList = [
   { key: "name", label: "Name" },
   { key: "trackCount", label: "Track Count" },
 ];
 
+/**
+ * Table to display list of playlists fetched from backend
+ * @param props an object contains request result as payload attribute and post request dispatcher for related content
+ * @returns Playlist table element view
+ */
 function PlayListTable(props: IFetcherComponentProps<any[] | null>) {
   return (
     <Table
@@ -26,13 +34,18 @@ function PlayListTable(props: IFetcherComponentProps<any[] | null>) {
   );
 }
 
+/**
+ * Playlist add row element to containt form elements of playlist to be added
+ * @param postConfig addPlaylist request axios config
+ * @returns Add row element view
+ */
 function AddPlaylist({ setPostConfig }: IFetcherComponentProps<any[] | null>) {
   const [isClicked, setIsClicked] = React.useState(false);
   return (
     <div className={`add-row flex-row ${isClicked ? "open" : "closed"}`}>
       {isClicked ? (
         <>
-          <Form onSubmit={(formData) => setPostConfig(addPlaylistConfig)}>
+          <Form onSubmit={(formData) => setPostConfig(addPlaylistConfig(formData))}>
             <TextInput id="playlist" placeHolder="Playlist Name" />
           </Form>
           <span onClick={() => setIsClicked(false)}>cancel</span>
@@ -44,4 +57,7 @@ function AddPlaylist({ setPostConfig }: IFetcherComponentProps<any[] | null>) {
   );
 }
 
+/**
+ * export table inside withLocalFetch higher order component to commit related request and retrieve response in props data
+ */
 export default withLocalFetch(() => getPlaylistConfig, PlayListTable);

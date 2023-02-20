@@ -15,3 +15,7 @@ export const generateQueryParams = (params: { [key: string]: any }) =>
   Object.entries(params)
     .reduce((prevValue, [key, value]) => `${prevValue}${key}=${value}&`, "?")
     .slice(0, -1);
+
+export const removeToken =() => {
+  window.sessionStorage.removeItem(env.TOKEN_KEY)
+}

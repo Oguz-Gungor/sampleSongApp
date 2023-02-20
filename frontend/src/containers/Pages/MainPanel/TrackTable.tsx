@@ -5,16 +5,28 @@ import { IFetcherComponentProps } from "../../../util/CommonInterfaces";
 import withLocalFetch from "../../../util/hocs/withRequest";
 import "./TrackTable.scss";
 
+/**
+ * list of columns in track table
+ */
+//todo : define interface
 const columnList = [
   { key: "track", label: "Track" },
   { key: "album", label: "Album" },
   { key: "artist", label: "Artist" },
 ];
 
+/**
+ * interface to define track table element props
+ */
 interface ITrackTableProps extends JSX.IntrinsicAttributes {
   playlistId: number;
 }
 
+/**
+ * Table to display list of tracks fetched from backend in given playlist
+ * @param props an object contains request result as payload attribute and post request dispatcher for related content
+ * @returns Track table element view
+ */
 function TrackTable(props: IFetcherComponentProps<any[]>) {
   return (
     <Table
@@ -27,6 +39,9 @@ function TrackTable(props: IFetcherComponentProps<any[]>) {
   );
 }
 
+/**
+ * export table inside withLocalFetch higher order component to commit related request and retrieve response in props data
+ */
 export default withLocalFetch<ITrackTableProps, any[]>(
   getTracksConfig,
   TrackTable

@@ -10,6 +10,9 @@ import { env } from "../../../util/tempConfig";
 import { wrappedAxios } from "../../../util/UtilFunctions";
 import "./Login.scss";
 
+/**
+ * Possible authorization states
+ */
 enum LoginStatus {
   CHECKING,
   INITIAL,
@@ -18,18 +21,33 @@ enum LoginStatus {
   FAIL,
 }
 
+/**
+ * Login container authentication status structure
+ */
 interface ILoginStateStruct {
+  /**
+   * authentication status for login container
+   */
   status: LoginStatus;
-  payload?: string;
 }
 
+/**
+ * Login page container to display login form on screen
+ * @returns Login page container
+ */
 export default function Login() {
+  /**
+   * state and dispatcher to contain current authentication status
+   */
   const [loginStatus, setLoginStatus] = React.useState<ILoginStateStruct>({
     status: LoginStatus.CHECKING,
   });
 
   const navigate = useNavigate();
 
+  /**
+   * If auth token exists on container load, validate existing token. Else, set current status as INITIAL(Unauthenticated)
+   */
   React.useEffect(() => {
     if (window.sessionStorage.getItem(env.TOKEN_KEY) == null) {
       setLoginStatus({ status: LoginStatus.INITIAL });
@@ -38,12 +56,18 @@ export default function Login() {
     }
   }, []);
 
+  /**
+   * If login status changed to success, opens main container
+   */
   React.useEffect(() => {
     if (loginStatus.status === LoginStatus.SUCCESS) {
       navigate("/main");
     }
   }, [loginStatus.status]);
 
+  /**
+   * variable to state whether loader should be shown or not
+   */
   const showLoader =
     loginStatus.status === LoginStatus.CHECKING ||
     loginStatus.status === LoginStatus.SUCCESS ||
@@ -74,6 +98,11 @@ export default function Login() {
   );
 }
 
+/**
+ * Commit login request with given form data and set login status respect to REST response
+ * @param data form data
+ * @param setLoginStatus login status dispatcher
+ */
 const loginHandler = (
   data: any,
   setLoginStatus: React.Dispatch<React.SetStateAction<ILoginStateStruct>>
@@ -81,12 +110,21 @@ const loginHandler = (
   handleLoginEvents(wrappedAxios(getLoginConfig(data)), setLoginStatus);
 };
 
+/**
+ * Commit validation request to validate existing token and set login status respect to validation result
+ * @param setLoginStatus login status dispatcher
+ */
 const validateToken = (
   setLoginStatus: React.Dispatch<React.SetStateAction<ILoginStateStruct>>
 ) => {
   handleLoginEvents(wrappedAxios(validateTokenConfig), setLoginStatus);
 };
 
+/**
+ * To handle login related response and set current authentication status accordingly
+ * @param request axios request config for request to be comitted
+ * @param setLoginStatus login status dispatcher
+ */
 const handleLoginEvents = (
   request: Promise<any>,
   setLoginStatus: React.Dispatch<React.SetStateAction<ILoginStateStruct>>
