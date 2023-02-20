@@ -16,22 +16,23 @@ const reducer = (
 ) => {
   switch (action.type) {
     case pending(ActionType.PLAYLISTS):
-      return { ...state, playlists: { ...state.playlists, isLoading: true } };
+        console.log("pending");
+      return { ...state, playlists: { ...state.playlists, isLoading: action.payload} };
     case error(ActionType.PLAYLISTS):
+        console.log("error");
       return {
         ...state,
         playlists: {
           ...state.playlists,
-          isLoading: false,
           error: action.payload,
         },
       };
     case success(ActionType.PLAYLISTS):
+        console.log("success")
       return {
         ...state,
         playlists: {
           ...state.playlists,
-          isLoading: false,
           payload: action.payload,
         },
       };

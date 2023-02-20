@@ -63,11 +63,12 @@ export function useReduxFetch(
   action: any,
   reFetch = false
 ) {
-  const temp= useSelector(selectorFunction);
+  const temp = useSelector(selectorFunction);
   console.log(temp);
   const { payload, isLoading, error } = temp;
   const dispatch = useDispatch();
-  const setLoading = () => dispatch({ type: RequestReducer.pending(action) });
+  const setLoading = (data: any) =>
+    dispatch({ type: RequestReducer.pending(action), payload: data });
   const setPayload = (data: any) =>
     dispatch({ type: RequestReducer.success(action), payload: data });
   const setError = (data: any) =>
