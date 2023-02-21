@@ -4,9 +4,12 @@ import { IFetcherComponentProps } from "../CommonInterfaces";
 import { useLocalFetch, useReduxFetch } from "../CustomHooks";
 import withFetch from "./withFetch";
 
+
 /**
  * Higher order component to wrap component with request cycle internals with redux
- * @param getRequestConfig axios request config
+ * @param getRequestConfig  axios request config
+ * @param selectorFunction function to fetch desired object from redux
+ * @param action redux dispatch action
  * @param Component component to be wrapped
  * @returns wrapped component with request cycle internals as additional props
  */

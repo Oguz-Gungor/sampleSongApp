@@ -8,6 +8,9 @@ import { BrowserRouter } from "react-router-dom";
 import { configureStore } from "@reduxjs/toolkit";
 import RequestReducer from "./redux/RequestReducer";
 
+/**
+ * Created redux store
+ */
 const store = configureStore({
   reducer: {
     request: RequestReducer.reducer,
@@ -17,6 +20,7 @@ const store = configureStore({
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>

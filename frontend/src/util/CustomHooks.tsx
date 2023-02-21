@@ -30,8 +30,9 @@ interface ILocalFetchHookResult<T> {
 }
 
 /**
- * Custom hook to return and trigger current request status and payload to the react components
+ * Custom hook to return and trigger current request status and payload to the react components via react states
  * @param getRequestConfig axios request config
+ * @param wrap whether request should be wrapped with wrappedAxios
  * @param reFetch boolean value to trigger new request
  * @returns object that contains response internals, pending status, error message and related post config dispatcher
  */
@@ -47,6 +48,7 @@ export function useLocalFetch<T>(
   //latest error message
   const [error, setError] = React.useState<string | null>(null);
 
+  //fetch hook to handle request cycle with given dispatchers and states
   const { setPostConfig } = useFetch(
     getRequestConfig,
     setLoading,
@@ -56,9 +58,19 @@ export function useLocalFetch<T>(
     reFetch
   );
 
+  //return current status
   return { payload, isLoading, error, setPostConfig };
 }
 
+/**
+ * Custom hook to return and trigger current request status and payload to the react components via redux states
+ * @param getRequestConfig axios request config
+ * @param selectorFunction function to fetch desired object from redux
+ * @param action redux dispatch action
+ * @param wrap whether request should be wrapped with wrappedAxios
+ * @param reFetch boolean value to trigger new request
+ * @returns current request state of desired object in redux
+ */
 export function useReduxFetch(
   getRequestConfig: AxiosRequestConfig,
   selectorFunction: (state: any) => any,
@@ -66,15 +78,22 @@ export function useReduxFetch(
   wrap = true,
   reFetch = false
 ) {
+  //request state of object resides in redux
   const { payload, isLoading, error } = useSelector(selectorFunction);
+
   const dispatch = useDispatch();
+
+  //dispatcher to update loading attribute of desired object
   const setLoading = (data: any) =>
     dispatch({ type: RequestReducer.pending(action), payload: data });
+  //dispatcher to update payload attribute of desired object
   const setPayload = (data: any) =>
     dispatch({ type: RequestReducer.success(action), payload: data });
+  //dispatcher to update error attribute of desired object
   const setError = (data: any) =>
     dispatch({ type: RequestReducer.error(action), payload: data });
 
+  //fetch hook to handle request cycle with given dispatchers and states
   const { setPostConfig } = useFetch(
     getRequestConfig,
     setLoading,
@@ -84,9 +103,20 @@ export function useReduxFetch(
     reFetch
   );
 
+  //return current status
   return { payload, isLoading, error, setPostConfig };
 }
 
+/**
+ * Custom hook To handle request cycle with given dispatchers and states
+ * @param getRequestConfig axios request config
+ * @param setLoading dispatcher to update loading status of desired object
+ * @param setPayload dispatcher to update payload of desired object
+ * @param setError dispatcher to update error status of desired object
+ * @param wrap whether request should be wrapped with wrappedAxios
+ * @param reFetch boolean value to trigger new request
+ * @returns 
+ */
 const useFetch = (
   getRequestConfig: AxiosRequestConfig,
   setLoading: any,

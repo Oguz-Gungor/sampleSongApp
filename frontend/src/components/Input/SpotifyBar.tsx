@@ -9,9 +9,12 @@ import Table from "../InformationElements/Table";
 import { columnList } from "../../containers/Tables/TrackTable";
 import { wrappedAxios } from "../../util/UtilFunctions";
 
-export interface ISpotifyBarProps extends IComponentProps, ITextInputProps {}
-
-export default function SpotifyBar(props: ISpotifyBarProps) {
+/**
+ * SpotifyBar component to generate a content wrapped with search functionality from spotify api
+ * @param props callback on change, placeholder, type, id and label of input element
+ * @returns Text input with utility, search from spotify API integration and style
+ */
+export default function SpotifyBar(props: ITextInputProps) {
   //todo : debounce mechanism on setSearchText
   const spotifyToken = useSelector(
     (state: any) => state.request.spotifyToken.payload

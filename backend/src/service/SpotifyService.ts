@@ -1,6 +1,7 @@
 import { IRequestInterface } from "../interfaces/RequestInterfaces";
 import SpotifyWebApi from "spotify-web-api-node";
 
+//todo: move to .env
 let spotifyApi = new SpotifyWebApi({
   clientId: "fa11d05877a84f35ba59458865a6d234",
   clientSecret: "e0baed8da32d43f3816668ee9a0ae620",

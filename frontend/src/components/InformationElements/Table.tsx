@@ -3,22 +3,62 @@ import { IComponentProps } from "../../util/CommonInterfaces";
 import SearchBar from "../Input/SearchBar";
 import "./Table.scss";
 
+/**
+ * Table component props additional to Component props
+ */
 export interface ITableProps extends IComponentProps {
+  /**
+   * row presentation of data to be displayed
+   */
   rows: any[] | null;
+  /**
+   * list of columns in ITableColumn form
+   */
   columnList: ITableColumn[];
+  /**
+   * Expanded renderer to render view element with selected row content
+   * @param row selected row element
+   * @returns element to be rendered on row click
+   */
   expandRenderer?: (row: any) => React.ReactNode;
+  /**
+   * Attributes to be searched in table
+   */
   searchAttributes?: string[];
+  /**
+   * View Element to be rendered as last row of table to handle add functionality 
+   * @returns 
+   */
   addRenderer?: () => React.ReactNode;
 }
+
+/**
+ * column structure of Table component
+ */
 export interface ITableColumn {
+  /**
+   * Corresponding attribute key in element of data list
+   */
   key: string;
+  /**
+   * Label to be displayed as column header
+   */
   label: string;
 }
 
+/**
+ * Table component to wrap html table with expand utilities using React flux cycle
+ * @param props ITableComponentprops
+ * @returns Wrapped expandable,searchable and styled table component
+ */
 export default function Table(props: ITableProps) {
+  //state and dispatcher to handle selected row index
   const [selectedRow, setSelectedRow] = React.useState<number | null>(null);
+  
+  //state and dispatcher to handle content data changes
   const [rows, setRows] = React.useState(props.rows);
 
+  //to load new content comes from props to state
   React.useEffect(() => {
     setRows(props.rows);
   }, [props.rows]);

@@ -1,15 +1,11 @@
 import * as React from "react";
-import { useDispatch } from "react-redux";
 import Card from "../../../components/Card/Card";
 import InfoCard from "../../../components/InformationElements/InfoCard";
-import Popup from "../../../components/InformationElements/Popup";
-import SearchBar from "../../../components/Input/SearchBar";
 import RouteLink from "../../../components/Link/RouteLink";
 import Page from "../../../components/Page/Page";
 import { removeToken } from "../../../util/UtilFunctions";
 import PlaylistTable from "../../Tables/PlaylistTable";
 import "./MainPanel.scss";
-import SpotifyWebApi from "spotify-web-api-node";
 import { useReduxFetch } from "../../../util/CustomHooks";
 import RequestReducer from "../../../redux/RequestReducer";
 import { spotifyToken } from "../../../api/Spotify";
@@ -21,7 +17,8 @@ import SpotifyBar from "../../../components/Input/SpotifyBar";
  * @returns Main page container
  */
 export default function MainPanel() {
-  const {payload,error,isLoading} = useReduxFetch(spotifyToken,(state) => 
+  //To fetch spotify token and put it to redux 
+  useReduxFetch(spotifyToken,(state) => 
      state.request.spotifyToken
   ,RequestReducer.ActionType.SPOTIFY_TOKEN);
   return (

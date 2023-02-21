@@ -6,7 +6,6 @@ import { addPlaylistConfig, getPlaylistConfig } from "../../api/Playlist";
 import Form from "../../components/Input/Form";
 import TextInput from "../../components/Input/TextInput";
 import Table from "../../components/InformationElements/Table";
-import withLocalFetch from "../../util/hocs/withLocalFetch";
 import withReduxFetch from "../../util/hocs/withReduxFetch";
 import RequestReducer from "../../redux/RequestReducer";
 

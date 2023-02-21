@@ -31,6 +31,9 @@ export interface IFetcherComponentProps<T> extends JSX.IntrinsicAttributes{
  * common attributes for implemented parent components
  */
 export interface IWrapperComponent extends IComponentProps {
+  /**
+   * Wrapped element node
+   */
   children?: React.ReactNode;
 }
 

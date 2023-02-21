@@ -5,6 +5,10 @@ import Login from "./containers/Pages/Login/Login";
 import MainPanel from "./containers/Pages/MainPanel/MainPanel";
 import Register from "./containers/Pages/Register/Register";
 
+/**
+ * Wrapper App function to set router
+ * @returns application content in specified routing
+ */
 function App() {
   return (
     <>
