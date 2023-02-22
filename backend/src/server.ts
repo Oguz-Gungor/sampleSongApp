@@ -110,7 +110,7 @@ const tryConn = () => sequelize.transaction(initializeDB).then(()=>{
 }).catch((err)=>{
   //todo: set timeout  
   console.log("db conn refused");
-  console.log("error: " , err);
+  // console.log("error: " , err);
   const timeout = setTimeout(()=>{
   tryConn();
   clearTimeout(timeout)
