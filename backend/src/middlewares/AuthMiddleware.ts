@@ -28,6 +28,7 @@ const verifyToken = async (key: string, token: string) => {
     async (err, decode) => {
       if (err) {
         //todo : classify error and log
+        // return new token on expire
         return false;
       } else {
         const parsedID = (decode as jwt.JwtPayload).id;

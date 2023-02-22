@@ -14,9 +14,9 @@ export const withErrorHandler = async (
   callback: () => Promise<any>,
   errorHandleCallback: (error: any) => void
 ) => {
-  // try {
+   try {
     return await callback();
-  // } catch (err) {
-    // await errorHandleCallback(err);
-  // }
+   } catch (err) {
+     await errorHandleCallback(err);
+   }
 };

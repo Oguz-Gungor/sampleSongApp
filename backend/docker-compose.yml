@@ -1,0 +1,13 @@
+# docker-compose.yml
+version: "3"
+services:
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    ports:
+      - "35432:5432"
+    environment:
+      POSTGRES_USER: postgresuser
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: postgres

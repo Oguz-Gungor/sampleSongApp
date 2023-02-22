@@ -55,6 +55,7 @@ app.use(
     AuthMiddleware.validateToken
   )
 );
+//console.log(process.env);
 
 //db loader
 export const sequelize = new Sequelize({
@@ -98,8 +99,24 @@ const initializeDB = async (t: Transaction) => {
       return utilInstance;
     })
   );
+  await User.User.create({name:"oguz",
+    email:"asd@asd.asd",
+    password:"123"}).catch((err)=>{
+      console.log("err");
+    })
 };
-sequelize.transaction(initializeDB);
+const tryConn = () => sequelize.transaction(initializeDB).then(()=>{
+  console.log("connection established");
+}).catch((err)=>{
+  //todo: set timeout  
+  console.log("db conn refused");
+  console.log("error: " , err);
+  const timeout = setTimeout(()=>{
+  tryConn();
+  clearTimeout(timeout)
+  },5000);
+});
+tryConn();
 
 //playlist loader
 app.get("/playlists", PlaylistController.getPlaylists);
