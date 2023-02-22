@@ -38,7 +38,10 @@ export default function SearchBar(props: ISearchBarProps) {
         props.list.filter((element) =>
           props.filterAttributes.some(
             (attribute) =>
-              element[attribute] && element[attribute].includes(searchText)
+              element[attribute] &&
+              (element[attribute] as string)
+                .toLowerCase()
+                .includes(searchText.toLowerCase())
           )
         )
       );
