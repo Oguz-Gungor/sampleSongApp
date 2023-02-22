@@ -102,7 +102,7 @@ const initializeDB = async (t: Transaction) => {
   await User.User.create({name:"oguz",
     email:"asd@asd.asd",
     password:"123"}).catch((err)=>{
-      console.log("err");
+      console.log("err on adding default user");
     })
 };
 const tryConn = () => sequelize.transaction(initializeDB).then(()=>{

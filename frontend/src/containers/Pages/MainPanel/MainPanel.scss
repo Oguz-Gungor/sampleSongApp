@@ -6,6 +6,8 @@
   .main-container {
     padding: 2% 5%;
     width: 90%;
+    overflow: hidden;
+    max-height: 90vh;
     row-gap: 1.2em;
     .header {
       z-index: 1;
@@ -24,9 +26,16 @@
       .table-card {
         width: 70%;
         height: min-content;
+        max-height: 19em;
+        overflow: scroll;        
+        .track-table {
+          max-height: 10em;
+          overflow: scroll;
+        }
       }
       .anthem-card {
         width: 30%;
+        height: 19em;
         .info-card-header {
           border-color: #1db954;
         }

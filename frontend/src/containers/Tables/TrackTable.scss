@@ -3,7 +3,24 @@
   color: white;
   .row {
     &:hover {
-      background: linear-gradient(to right, black, #1db954, black)!important;
+      background: linear-gradient(to right, black, #1db954, black) !important;
+    }
+  }
+  .expand-flex-row {
+    background: linear-gradient(to right, black, #1db954, black);
+    justify-content: space-evenly;
+    .button {
+      background-color: black;
+      color: #1db954;
+      margin-top: 0.1em;
+      margin-bottom: 0.1em;
+      border-radius: 1em;
+      padding: 0.3em;
+      cursor: pointer;
+      &:hover {
+        background-color: #404040;
+        color: white;
+      }
     }
   }
 }

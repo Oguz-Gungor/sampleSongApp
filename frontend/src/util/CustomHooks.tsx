@@ -72,7 +72,7 @@ export function useLocalFetch<T>(
  * @returns current request state of desired object in redux
  */
 export function useReduxFetch(
-  getRequestConfig: AxiosRequestConfig,
+  getRequestConfig: AxiosRequestConfig | null,
   selectorFunction: (state: any) => any,
   action: any,
   wrap = true,
@@ -115,10 +115,10 @@ export function useReduxFetch(
  * @param setError dispatcher to update error status of desired object
  * @param wrap whether request should be wrapped with wrappedAxios
  * @param reFetch boolean value to trigger new request
- * @returns 
+ * @returns
  */
 const useFetch = (
-  getRequestConfig: AxiosRequestConfig,
+  getRequestConfig: AxiosRequestConfig | null,
   setLoading: any,
   setPayload: any,
   setError: any,
@@ -147,24 +147,26 @@ const useFetch = (
    * To handle request and update hook internals respect to request cycle states
    * @param specifiedResutConfig
    */
-  const handleRequest = (specifiedResultConfig: AxiosRequestConfig) => {
-    setLoading(true);
-    setError(null);
-    const requestFunction = wrap ? wrappedAxios : axios;
-    requestFunction(specifiedResultConfig)
-      .then((response) => {
-        setPayload(response.data);
-      })
-      .catch((error) => {
-        if (error.response.status === 403) {
-          removeToken();
-          navigate("/login");
-        }
-        setError(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+  const handleRequest = (specifiedResultConfig: AxiosRequestConfig | null) => {
+    if (specifiedResultConfig != null) {
+      setLoading(true);
+      setError(null);
+      const requestFunction = wrap ? wrappedAxios : axios;
+      requestFunction(specifiedResultConfig)
+        .then((response) => {
+          setPayload(response.data);
+        })
+        .catch((error) => {
+          if (error.response.status === 403) {
+            removeToken();
+            navigate("/login");
+          }
+          setError(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
   return { setPostConfig };
 };

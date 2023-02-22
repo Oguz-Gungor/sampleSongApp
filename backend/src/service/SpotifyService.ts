@@ -8,12 +8,17 @@ let spotifyApi = new SpotifyWebApi({
 });
 
 const requestSpotifyToken = async (): Promise<IRequestInterface<string>> => {
+  const { token } = await setSpotifyToken();
+  return { status: 200, dto: token };
+};
+
+const setSpotifyToken = async () => {
   const result = await spotifyApi.clientCredentialsGrant();
   const token = result.body.access_token;
   await spotifyApi.setAccessToken(token);
-  return { status: 200, dto: token };
+  return { token };
 };
 
 const getSpotifyApi = () => spotifyApi;
 
-export default { requestSpotifyToken, getSpotifyApi };
+export default { requestSpotifyToken, getSpotifyApi, setSpotifyToken };

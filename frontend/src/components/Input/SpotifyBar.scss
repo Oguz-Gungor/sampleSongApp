@@ -10,5 +10,9 @@
   }
   .extend-wrapper{
     height: 0;
+    .table-container{
+      height: 12em;
+      overflow: scroll;
+    }
   }
 }

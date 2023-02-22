@@ -64,7 +64,7 @@ export default function Table(props: ITableProps) {
   }, [props.rows]);
 
   return props.columnList && props.columnList.length > 0 ? (
-    <div className="table-container">
+    <div className={`table-container ${props.className}`}>
       {props.searchAttributes && props.searchAttributes.length > 0 && (
         <SearchBar
           filterAttributes={props.searchAttributes}
@@ -86,7 +86,7 @@ export default function Table(props: ITableProps) {
           )}`}
         />
       )}
-      <table className={`table ${props.className}`}>
+      <table className={"table"}>
         <thead>
           <tr className="header">
             {props.columnList.map(({ label }) => (

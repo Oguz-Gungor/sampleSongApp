@@ -1,5 +1,6 @@
 import * as React from "react";
 import { getTracksConfig } from "../../api/Tracks";
+import Button from "../../components/Button/Button";
 import Table from "../../components/InformationElements/Table";
 import { IFetcherComponentProps } from "../../util/CommonInterfaces";
 import withLocalFetch from "../../util/hocs/withLocalFetch";
@@ -34,10 +35,17 @@ function TrackTable(props: IFetcherComponentProps<any[]>) {
       rows={props.payload}
       columnList={columnList}
       searchAttributes={columnList.map(({ key }) => key)}
-      expandRenderer={(row) => <div>setAnthem,remove</div>}
+      expandRenderer={(row) => <TrackTableExpandRenderer/>}
     />
   );
 }
+
+const TrackTableExpandRenderer = () => (
+  <div className="flex-row expand-flex-row">
+    <Button>Set Anthem</Button>
+    <Button>Remove</Button>
+  </div>
+);
 
 /**
  * Table to display list of tracks fetched from backend in given playlist

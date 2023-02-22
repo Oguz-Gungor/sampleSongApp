@@ -1,13 +1,13 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { IComponentProps } from "../../util/CommonInterfaces";
 import TextInput, { ITextInputProps } from "./TextInput";
 import "./SpotifyBar.scss";
-import { useLocalFetch } from "../../util/CustomHooks";
+import { useLocalFetch, useReduxFetch } from "../../util/CustomHooks";
 import { spotifySearch, spotifyToken } from "../../api/Spotify";
 import Table from "../InformationElements/Table";
 import { columnList } from "../../containers/Tables/TrackTable";
 import { wrappedAxios } from "../../util/UtilFunctions";
+import RequestReducer from "../../redux/RequestReducer";
 
 /**
  * SpotifyBar component to generate a content wrapped with search functionality from spotify api
@@ -15,24 +15,35 @@ import { wrappedAxios } from "../../util/UtilFunctions";
  * @returns Text input with utility, search from spotify API integration and style
  */
 export default function SpotifyBar(props: ITextInputProps) {
+  const playlists = useSelector((state: any) => state.request.playlists.payload);
   //todo : debounce mechanism on setSearchText
-  const spotifyToken = useSelector(
-    (state: any) => state.request.spotifyToken.payload
-  );
   const [searchText, setSearchText] = React.useState("");
   const { payload, error, isLoading, setPostConfig } = useLocalFetch<any>(
     {},
     false,
     false
   );
-
+  //to get spotify token from redux to use it on search, and use dispatcher to refresh token on expire
+  const { payload: spotifyToken, setPostConfig: fetchSpotifyTokenWithConfig } =
+    useReduxFetch(
+      null,
+      (state: any) => state.request.spotifyToken,
+      RequestReducer.ActionType.SPOTIFY_TOKEN,
+      false
+    );
   const isSearchTextExists = searchText && searchText !== "";
   React.useEffect(() => {
-    if (isSearchTextExists) {
+    if (isSearchTextExists && spotifyToken) {
       setPostConfig(spotifySearch(spotifyToken, searchText));
     }
-  }, [searchText]);
-  console.log(payload?.tracks?.items);
+  }, [searchText, spotifyToken]);
+
+  React.useEffect(() => {
+    //todo : check if error is token expiration
+    // fetchSpotifyTokenWithConfig(spotifyToken);
+  }, [error]);
+
+  React.useEffect(() => {}, [error]);
   const rows = isSearchTextExists
     ? (payload?.tracks?.items ?? []).map((item: any) => ({
         track: item.name,
@@ -43,11 +54,10 @@ export default function SpotifyBar(props: ITextInputProps) {
         id: item?.id,
       }))
     : [];
-  console.log(rows);
+  //todo: paging with infinite scroll
   return (
-    <div className="flex-column spotify-bar">
+    <div className={`flex-column spotify-bar ${props.className}`}>
       <TextInput
-        className={`${props.className}`}
         onChange={(value) => setSearchText(value)}
         placeHolder={props.placeHolder}
       />
@@ -64,7 +74,7 @@ export default function SpotifyBar(props: ITextInputProps) {
                     method: "post",
                     url: "/track",
                     headers: {},
-                    data: {...row,playlistId:1},
+                    data: { ...row, playlistId: 1 },
                   })
                 }
               >
