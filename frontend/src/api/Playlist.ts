@@ -15,5 +15,6 @@ export const getPlaylistConfig = {
 export const addPlaylistConfig =(playlist:any)=> ({
   method: "post",
   url: "/playlists",
-  headers: {},
+  headers: {},  
+  data: playlist,
 })

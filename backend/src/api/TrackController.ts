@@ -3,14 +3,14 @@ import TrackService from "../service/TrackService";
 import { withErrorHandler, wrapServiceResponse } from "./ControllerUtil";
 
 const getTracks = async (req: Request, res: Response, next: NextFunction) =>
-  withErrorHandler(() => {
+  withErrorHandler(async () => {
     const playlistId = parseInt(req.query.id as string);
-    wrapServiceResponse(res, TrackService.getTracks(playlistId));
+    await wrapServiceResponse(res, TrackService.getTracks(playlistId));
   }, next);
 
 const addTrack = async (req: Request, res: Response, next: NextFunction) =>
-  withErrorHandler(() => {
-    res.send("add track");
+  withErrorHandler(async () => {
+    await wrapServiceResponse(res, TrackService.addTrack(req.body));
   }, next);
 
 export default { getTracks, addTrack };

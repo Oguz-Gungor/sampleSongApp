@@ -50,7 +50,7 @@ function AddPlaylist({ setPostConfig }: IFetcherComponentProps<any[] | null>) {
           <Form
             onSubmit={(formData) => setPostConfig(addPlaylistConfig(formData))}
           >
-            <TextInput id="playlist" placeHolder="Playlist Name" />
+            <TextInput id="name" placeHolder="Playlist Name" />
           </Form>
           <span onClick={() => setIsClicked(false)}>cancel</span>
         </>

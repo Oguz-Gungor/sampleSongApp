@@ -8,7 +8,12 @@ import AuthMiddleware from "./middlewares/AuthMiddleware";
 import SpotifyMiddleware from "./middlewares/SpotifyMiddleware";
 import LoggingMiddleware from "./middlewares/LoggingMiddleware";
 import SpotifyController from "./api/SpotifyController";
-import BodyParser from "body-parser"
+import BodyParser from "body-parser";
+import { Sequelize } from "sequelize";
+import User from "./model/User";
+import Playlist from "./model/Playlist";
+import Track from "./model/Track";
+import PlaylistTrack from "./model/PlaylistTrack";
 dotenv.config();
 
 const app: Express = express();
@@ -43,10 +48,53 @@ const excludePaths =
 app.use(LoggingMiddleware.requestLogger);
 app.use(
   excludePaths(
-    [{ path: "/login", method: "GET" }],
+    [
+      { path: "/login", method: "GET" },
+      { path: "/register", method: "POST" },
+    ],
     AuthMiddleware.validateToken
   )
 );
+
+//db loader
+export const sequelize = new Sequelize({
+  dialect: "postgres",
+  host: process.env.DB_HOST,
+  port: parseInt(process.env.DB_PORT ?? ""),
+  database: process.env.DB_NAME,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  logging: false,
+  // hooks: {
+  //   afterConnect: () => {
+  //     console.log("connection established");
+  //   },
+  // },
+});
+
+const utilInstances = [User.util, Playlist.util, Track.util,PlaylistTrack.util];
+
+const initializeDB = async () => {
+  await Promise.all(
+    utilInstances.map(async (utilInstance) => {
+      await utilInstance.init(sequelize);
+      return utilInstance;
+    })
+  );
+  await Promise.all(
+    utilInstances.map(async (utilInstance) => {
+      await utilInstance.setRelations();
+      return utilInstance;
+    })
+  );
+  await Promise.all(
+    utilInstances.map(async (utilInstance) => {
+      await utilInstance.sync();
+      return utilInstance;
+    })
+  );
+};
+initializeDB();
 
 //playlist loader
 app.get("/playlists", PlaylistController.getPlaylists);
@@ -60,13 +108,15 @@ app.post(
   TrackController.addTrack
 );
 
-//login loader
+//auth loader
 app.get("/login", AuthController.login);
+app.post("/register", AuthController.register);
 app.get("/validate", AuthController.validate);
-app.use(LoggingMiddleware.errorLogger);
 
 //spotify loader
 app.get("/spotifyToken", SpotifyController.spotifyToken);
+
+app.use(LoggingMiddleware.errorLogger);
 
 app.listen(process.env.PORT, () => {
   console.log(

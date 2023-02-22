@@ -11,12 +11,12 @@ export const wrapServiceResponse = async (
 };
 
 export const withErrorHandler = async (
-  callback: () => any,
+  callback: () => Promise<any>,
   errorHandleCallback: (error: any) => void
 ) => {
-  try {
-    await callback();
-  } catch (err) {
-    errorHandleCallback(err);
-  }
+  // try {
+    return await callback();
+  // } catch (err) {
+    // await errorHandleCallback(err);
+  // }
 };

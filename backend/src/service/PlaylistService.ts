@@ -1,5 +1,6 @@
 import { IRequestInterface } from "../interfaces/RequestInterfaces";
-import { IPlaylist } from "../model/Playlist";
+import Playlist, { IPlaylist } from "../model/Playlist";
+import User from "../model/User";
 
 const playlists = [
   {
@@ -14,8 +15,22 @@ const playlists = [
   },
 ];
 
-const getPlaylists = async (): Promise<IRequestInterface<IPlaylist[]>> => {
-  return { status: 200, dto: playlists };
+const getPlaylists = async (userId: any): Promise<IRequestInterface<any[]>> => {
+  return {
+    status: 200,
+    dto: await Playlist.Playlist.findAll({ where: { UserId: userId } }),
+  };
 };
 
-export default { getPlaylists };
+const addPlaylist = async (
+  playlistData: any,
+  userId: any
+): Promise<IRequestInterface<IPlaylist[]>> => {
+  await Playlist.Playlist.create(
+    { ...playlistData, UserId: userId },
+    { include: [User.User] }
+  );
+  return getPlaylists(userId);
+};
+
+export default { getPlaylists, addPlaylist };

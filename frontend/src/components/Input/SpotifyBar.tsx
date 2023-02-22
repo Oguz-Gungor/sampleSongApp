@@ -64,7 +64,7 @@ export default function SpotifyBar(props: ITextInputProps) {
                     method: "post",
                     url: "/track",
                     headers: {},
-                    data: row,
+                    data: {...row,playlistId:1},
                   })
                 }
               >
