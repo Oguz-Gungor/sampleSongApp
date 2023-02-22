@@ -10,6 +10,7 @@ class Track extends Model {
   public album?: string;
   public link?: string;
   public image?: string;
+  public id?: string;
 }
 
 class TrackCreator extends ModelCreator {
@@ -51,7 +52,8 @@ class TrackCreator extends ModelCreator {
 
   public setRelations(): void {
     Track.belongsToMany(Playlist.Playlist, {
-      through: PlaylistTrack.PlaylistTrack
+      through: PlaylistTrack.PlaylistTrack,
+      constraints:true
     });
   }
 

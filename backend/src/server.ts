@@ -9,7 +9,7 @@ import SpotifyMiddleware from "./middlewares/SpotifyMiddleware";
 import LoggingMiddleware from "./middlewares/LoggingMiddleware";
 import SpotifyController from "./api/SpotifyController";
 import BodyParser from "body-parser";
-import { Sequelize } from "sequelize";
+import { Sequelize, Transaction } from "sequelize";
 import User from "./model/User";
 import Playlist from "./model/Playlist";
 import Track from "./model/Track";
@@ -72,9 +72,14 @@ export const sequelize = new Sequelize({
   // },
 });
 
-const utilInstances = [User.util, Playlist.util, Track.util,PlaylistTrack.util];
-
-const initializeDB = async () => {
+const utilInstances = [
+  User.util,
+  Playlist.util,
+  Track.util,
+  PlaylistTrack.util,
+];
+//todo : set transaction for init methods
+const initializeDB = async (t: Transaction) => {
   await Promise.all(
     utilInstances.map(async (utilInstance) => {
       await utilInstance.init(sequelize);
@@ -94,7 +99,7 @@ const initializeDB = async () => {
     })
   );
 };
-initializeDB();
+sequelize.transaction(initializeDB);
 
 //playlist loader
 app.get("/playlists", PlaylistController.getPlaylists);
