@@ -1,20 +1,38 @@
 import { NextFunction, Request, Response } from "express";
 import winston, { LoggerOptions } from "winston";
 
-//colors: { info: "blue", error: "red" },
+/**
+ * Configuration to be used for winston logger
+ */
 const logConfiguration: LoggerOptions = {
   transports: [new winston.transports.Console()],
   level: "http"
 };
 
+/**
+ * winston logger instance
+ */
 const logger = winston.createLogger(logConfiguration);
 
+/**
+ * Middleware to log requests with winston
+ * @param req REST request
+ * @param res REST response
+ * @param next function to call next handler
+ */
 const requestLogger = (req: Request, res: Response, next: NextFunction) => {
   //todo : check is track content valid by requesting spotify api
   logger.http(`New ${req.method} request has been received for ${req.path}`);
   next();
 };
 
+/**
+ * Middleware to log errors with winston
+ * @param err error stack from earlier handlers
+ * @param req REST request
+ * @param res REST response
+ * @param next next handler
+ */
 const errorLogger = (
   err: any,
   req: Request,

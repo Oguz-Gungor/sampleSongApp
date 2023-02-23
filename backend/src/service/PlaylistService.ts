@@ -1,20 +1,13 @@
 import { IRequestInterface } from "../interfaces/RequestInterfaces";
-import Playlist, { IPlaylist } from "../model/Playlist";
+import Playlist from "../model/Playlist";
 import User from "../model/User";
 
-const playlists = [
-  {
-    id: 1,
-    name: "Bard",
-    trackCount: 2,
-  },
-  {
-    id: 2,
-    name: "Metal",
-    trackCount: 3,
-  },
-];
 
+/**
+ * To get playlists of given user id
+ * @param userId id of user whom request had been held by
+ * @returns list of playlist user is related to
+ */
 const getPlaylists = async (userId: any): Promise<IRequestInterface<any[]>> => {
   return {
     status: 200,
@@ -22,10 +15,16 @@ const getPlaylists = async (userId: any): Promise<IRequestInterface<any[]>> => {
   };
 };
 
+/**
+ * To add new playlist and relate it with given user
+ * @param playlistData attributes of playlist to be created
+ * @param userId id of user whom request had been held by
+ * @returns list of playlist user has after create operations
+ */
 const addPlaylist = async (
   playlistData: any,
   userId: any
-): Promise<IRequestInterface<IPlaylist[]>> => {
+): Promise<IRequestInterface<any[]>> => {
   await Playlist.Playlist.create(
     { ...playlistData, UserId: userId },
     { include: [User.User] }

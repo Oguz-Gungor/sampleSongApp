@@ -2,11 +2,18 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import User from "../model/User";
 
+/**
+ * Middleware to validate token inside request
+ * @param req REST request
+ * @param res REST response
+ * @param next next handler
+ */
 const validateToken = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  //destructured key-token pair inside request header
   const [key, token] = (req.headers.authorization ?? "").split(" ");
   const isVerified = await verifyToken(key, token);
   if (isVerified) {
@@ -18,6 +25,12 @@ const validateToken = async (
   }
 };
 
+/**
+ * To check request authorization content is verified
+ * @param key token key inside request authorization
+ * @param token token string
+ * @returns whether key and token pairs are valid
+ */
 const verifyToken = async (key: string, token: string) => {
   if (key != process.env.TOKEN_KEY) {
     return "Invalid token type";
@@ -38,6 +51,11 @@ const verifyToken = async (key: string, token: string) => {
   );
 };
 
+/**
+ * To fetch user id from authorization token
+ * @param req REST request
+ * @returns user id
+ */
 const getUserIDFromToken = async (req: Request) => {
   const [key, token] = (req.headers.authorization ?? "").split(" ");
   return await jwt.verify(

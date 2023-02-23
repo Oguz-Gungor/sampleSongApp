@@ -14,10 +14,12 @@ import User from "./model/User";
 import Playlist from "./model/Playlist";
 import Track from "./model/Track";
 import PlaylistTrack from "./model/PlaylistTrack";
-dotenv.config();
 
+//Init application aspects
+dotenv.config();
 const app: Express = express();
 
+//Middleware to specify allowed request types, content and source
 app.use(cors());
 app.use(BodyParser.urlencoded({ extended: true }));
 app.use(BodyParser.json());
@@ -29,6 +31,7 @@ interface IExcludedRequest {
   //todo : may be converted to enum
   method: string;
 }
+//Method to exclude given request struct from middleware
 const excludePaths =
   (
     requestList: IExcludedRequest[],
@@ -45,7 +48,11 @@ const excludePaths =
       return middleware(req, res, next);
     }
   };
+
+//Middleware to log requests
 app.use(LoggingMiddleware.requestLogger);
+
+//Middleware to verify user in all requests except given paths and methods
 app.use(
   excludePaths(
     [
@@ -55,7 +62,6 @@ app.use(
     AuthMiddleware.validateToken
   )
 );
-//console.log(process.env);
 
 //db loader
 export const sequelize = new Sequelize({
@@ -65,46 +71,50 @@ export const sequelize = new Sequelize({
   database: process.env.DB_NAME,
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  logging: false,
-  // hooks: {
-  //   afterConnect: () => {
-  //     console.log("connection established");
-  //   },
-  // },
+  logging: false
 });
 
+//Models to be synched with database
 const utilInstances = [
   User.util,
   Playlist.util,
   Track.util,
   PlaylistTrack.util,
 ];
+
 //todo : set transaction for init methods
+//To initialize tables and relations in db
 const initializeDB = async (t: Transaction) => {
+  //Initialize tables
   await Promise.all(
     utilInstances.map(async (utilInstance) => {
       await utilInstance.init(sequelize);
       return utilInstance;
     })
   );
+  //Set relations
   await Promise.all(
     utilInstances.map(async (utilInstance) => {
       await utilInstance.setRelations();
       return utilInstance;
     })
   );
+  //sync relations with db
   await Promise.all(
     utilInstances.map(async (utilInstance) => {
       await utilInstance.sync();
       return utilInstance;
     })
   );
+  //creates initial user
   await User.User.create({name:"oguz",
     email:"asd@asd.asd",
     password:"123"}).catch((err)=>{
       console.log("err on adding default user");
     })
 };
+
+//To connect to database on startup, retry on connection error
 const tryConn = () => sequelize.transaction(initializeDB).then(()=>{
   console.log("connection established");
 }).catch((err)=>{
@@ -138,8 +148,10 @@ app.get("/validate", AuthController.validate);
 //spotify loader
 app.get("/spotifyToken", SpotifyController.spotifyToken);
 
+//Middleware to handle error related operations middlewares and controllers
 app.use(LoggingMiddleware.errorLogger);
 
+//to initialize project in port given in env variables
 app.listen(process.env.PORT, () => {
   console.log(
     `[Server]: I am running at https://localhost:${process.env.PORT}`

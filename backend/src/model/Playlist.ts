@@ -6,15 +6,26 @@ import PlaylistTrack from "./PlaylistTrack";
 import Track from "./Track";
 import User from "./User";
 
+/**
+ * Object model representation of Playlist model
+ */
 class Playlist extends Model {
   public id?: string;
   public name?: string;
   public count?: number;
 }
+
+/**
+ * Util class to handle Playlist model related operations
+ */
 class PlaylistCreator extends ModelCreator {
   constructor() {
     super();
   }
+  /**
+   * Init Playlist model table on system start (if not exists)
+   * @param sequelize 
+   */
   public async init(sequelize: Sequelize): Promise<void> {
     await Playlist.init(
       {
@@ -38,36 +49,23 @@ class PlaylistCreator extends ModelCreator {
       }
     );
     await Playlist.sync();
-    LoggingMiddleware.logger.info("Playlist table has been created")
+    LoggingMiddleware.logger.info("Playlist-Track relation table has been created")
   }
 
+   /**
+   * Init Playlist relations
+   */
   public setRelations(): void {
     Playlist.belongsTo(User.User);
     Playlist.belongsToMany(Track.Track, {through: PlaylistTrack.PlaylistTrack});
   }
 
+   /**
+   * Synchronize all changes with database
+   */
   public async sync(): Promise <void> {
     await Playlist.sync({alter:true});
   }
 }
 
 export default { Playlist, util: new PlaylistCreator() };
-
-export interface IPlaylist {
-  id: number;
-  name: string;
-  trackCount: number;
-}
-
-export const playlists: IPlaylist[] = [
-  {
-    id: 1,
-    name: "Bard",
-    trackCount: 2,
-  },
-  {
-    id: 2,
-    name: "Metal",
-    trackCount: 3,
-  },
-];

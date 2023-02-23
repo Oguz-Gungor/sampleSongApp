@@ -4,6 +4,9 @@ import { ModelCreator } from "./ModelCreator";
 import Playlist from "./Playlist";
 import PlaylistTrack from "./PlaylistTrack";
 
+/**
+ * Object model representation of Track table
+ */
 class Track extends Model {
   public track?: string;
   public artist?: string;
@@ -13,10 +16,17 @@ class Track extends Model {
   public id?: string;
 }
 
+/**
+ * Util class to handle Track model related operations
+ */
 class TrackCreator extends ModelCreator {
   constructor() {
     super();
   }
+   /**
+   * Init Track table on system start (if not exists)
+   * @param sequelize 
+   */
   public async init(sequelize: Sequelize): Promise<void> {
     await Track.init(
       {
@@ -50,6 +60,9 @@ class TrackCreator extends ModelCreator {
     LoggingMiddleware.logger.info("Track table has been created");
   }
 
+  /**
+   * Init Track relations
+   */
   public setRelations(): void {
     Track.belongsToMany(Playlist.Playlist, {
       through: PlaylistTrack.PlaylistTrack,
@@ -57,39 +70,12 @@ class TrackCreator extends ModelCreator {
     });
   }
 
+   /**
+   * Synchronize all changes with database
+   */
   public async sync(): Promise<void> {
     await Track.sync({alter:true});
   }
 }
 
 export default { Track, util: new TrackCreator() };
-
-export interface ITrack {
-  track: string;
-  album: string;
-  artist: string;
-}
-
-export const tracks: { [key: number]: ITrack[] } = {
-  1: [
-    {
-      track: "Under A Violet Moon",
-      album: "Under A Violet Moon",
-      artist: "Blackmore's Night",
-    },
-    { track: "City of the Dead", album: "Arcadia", artist: "Eurielle" },
-  ],
-  2: [
-    {
-      track: "Fade To Black",
-      album: "Ride The Lightning",
-      artist: "Metallica",
-    },
-    { track: "One", album: "And Justice for All", artist: "Metallica" },
-    {
-      track: "Wasted Years",
-      album: "Somewhere in Time",
-      artist: "Iron Maiden",
-    },
-  ],
-};
