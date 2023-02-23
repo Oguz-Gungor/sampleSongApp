@@ -1,4 +1,4 @@
-import express, { Express, RequestHandler } from "express";
+import express, { Express} from "express";
 import dotenv from "dotenv";
 import LoggingMiddleware from "./middlewares/LoggingMiddleware";
 import middlewareLoader from "./loaders/middlewareLoader";
