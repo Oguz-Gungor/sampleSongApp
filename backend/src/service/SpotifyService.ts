@@ -1,10 +1,12 @@
 import { IRequestInterface } from "../interfaces/RequestInterfaces";
 import SpotifyWebApi from "spotify-web-api-node";
+import dotenv from "dotenv";
 
-//todo: move to .env
+dotenv.config();
+
 let spotifyApi = new SpotifyWebApi({
-  clientId: "fa11d05877a84f35ba59458865a6d234",
-  clientSecret: "e0baed8da32d43f3816668ee9a0ae620",
+  clientId: process.env.SPOTIFY_CLIENT_ID,
+  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
 });
 
 /**

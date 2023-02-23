@@ -4,7 +4,9 @@ import { ModelCreator } from "./ModelCreator";
 import PlaylistTrack from "./PlaylistTrack";
 import Track from "./Track";
 import User from "./User";
+import dotenv from "dotenv";
 
+dotenv.config();
 /**
  * Object model representation of Playlist model
  */
@@ -43,7 +45,7 @@ class PlaylistCreator extends ModelCreator {
       },
       {
         sequelize,
-        tableName: "playlist",
+        tableName: process.env.DB_PLAYLIST__TABLE_NAME,
         timestamps: false,
       }
     );

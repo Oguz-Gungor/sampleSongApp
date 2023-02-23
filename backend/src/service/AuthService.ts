@@ -2,6 +2,9 @@ import { IRequestInterface } from "../interfaces/RequestInterfaces";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../model/User";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 /**
  * To handle login operation with given credentials
@@ -18,7 +21,7 @@ const login = async (
     const token = generateToken(user.id);
     return { status: 200, dto: token };
   } else {
-    return { status: 403, dto: "Invalid credentials" };
+    return { status: 403, dto: process.env.INVALID_CREDENTIALS_MESSAGE };
   }
 };
 
@@ -35,7 +38,7 @@ const register = async (formData: {
     const token = generateToken(user.id);
     return { status: 200, dto: token };
   } else {
-    return { status: 403, dto: "Invalid credentials" };
+    return { status: 403, dto: process.env.INVALID_CREDENTIALS_MESSAGE };
   }
 };
 

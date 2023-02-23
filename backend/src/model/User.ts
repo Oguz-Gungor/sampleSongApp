@@ -3,7 +3,9 @@ import { ModelCreator } from "./ModelCreator";
 import Playlist from "./Playlist";
 import bcrypt from "bcrypt";
 import LoggingMiddleware from "../middlewares/LoggingMiddleware";
+import dotenv from "dotenv";
 
+dotenv.config();
 /**
  * Object model representation of User table
  */
@@ -50,7 +52,7 @@ class UserCreator extends ModelCreator {
       },
       {
         sequelize,
-        tableName: "user",
+        tableName: process.env.DB_USER_TABLE_NAME,
         timestamps: false,
       }
     );

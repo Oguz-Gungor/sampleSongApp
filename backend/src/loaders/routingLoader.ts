@@ -1,36 +1,40 @@
-import { Express} from "express";
+import { Express } from "express";
 import AuthController from "../api/AuthController";
 import PlaylistController from "../api/PlaylistController";
 import SpotifyController from "../api/SpotifyController";
 import TrackController from "../api/TrackController";
 import SpotifyMiddleware from "../middlewares/SpotifyMiddleware";
+import APIConfig from "../config/APIConfig.json";
 import dotenv from "dotenv";
 
 dotenv.config();
 
+export enum Requests {
+  GET = "GET",
+  POST = "POST",
+}
 /**
-   * To load routes in startup phase
-   * @param app express app
-   */
-export default function routingLoader(app:Express){
+ * To load routes in startup phase
+ * @param app express app
+ */
+export default function routingLoader(app: Express) {
+  //playlist loader
+  app.get(APIConfig.PLAYLISTS, PlaylistController.getPlaylists);
+  app.post(APIConfig.PLAYLISTS, PlaylistController.addPlaylist);
 
-    //playlist loader
-    app.get("/playlists", PlaylistController.getPlaylists);
-    app.post("/playlists", PlaylistController.addPlaylist);
+  //tracks loader
+  app.get(APIConfig.TRACKS, TrackController.getTracks);
+  app.post(
+    APIConfig.TRACKS,
+    SpotifyMiddleware.checkSpotifyTrack,
+    TrackController.addTrack
+  );
 
-    //tracks loader
-    app.get("/tracks", TrackController.getTracks);
-    app.post(
-      "/track",
-      SpotifyMiddleware.checkSpotifyTrack,
-      TrackController.addTrack
-    );
+  //auth loader
+  app.get(APIConfig.LOGIN, AuthController.login);
+  app.post(APIConfig.REGISTER, AuthController.register);
+  app.get(APIConfig.VALIDATE, AuthController.validate);
 
-    //auth loader
-    app.get("/login", AuthController.login);
-    app.post("/register", AuthController.register);
-    app.get("/validate", AuthController.validate);
-
-    //spotify loader
-    app.get("/spotifyToken", SpotifyController.spotifyToken);
+  //spotify loader
+  app.get(APIConfig.SPOTIFY_TOKEN, SpotifyController.spotifyToken);
 }

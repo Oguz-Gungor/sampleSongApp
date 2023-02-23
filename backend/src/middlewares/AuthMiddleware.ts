@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import User from "../model/User";
+import dotenv from "dotenv";
 
+dotenv.config();
 /**
  * Middleware to validate token inside request
  * @param req REST request
@@ -18,10 +20,9 @@ const validateToken = async (
   const isVerified = await verifyToken(key, token);
   if (isVerified) {
     next();
-    
   } else {
     //todo : unhandled error log
-    res.status(403).send("Validation error");
+    res.status(403).send(process.env.INVALID_TOKEN_MESSAGE);
   }
 };
 
@@ -33,7 +34,7 @@ const validateToken = async (
  */
 const verifyToken = async (key: string, token: string) => {
   if (key != process.env.TOKEN_KEY) {
-    return "Invalid token type";
+    return false;
   }
   return await jwt.verify(
     token,

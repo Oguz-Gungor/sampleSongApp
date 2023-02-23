@@ -1,12 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 import winston, { LoggerOptions } from "winston";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 /**
  * Configuration to be used for winston logger
  */
 const logConfiguration: LoggerOptions = {
   transports: [new winston.transports.Console()],
-  level: "http"
+  level: process.env.WINSTON_LOG_LEVEL
 };
 
 /**
@@ -43,4 +46,4 @@ const errorLogger = (
   next();
 };
 
-export default { requestLogger, errorLogger ,logger};
+export default { requestLogger, errorLogger, logger };

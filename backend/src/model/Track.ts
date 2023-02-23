@@ -3,7 +3,9 @@ import LoggingMiddleware from "../middlewares/LoggingMiddleware";
 import { ModelCreator } from "./ModelCreator";
 import Playlist from "./Playlist";
 import PlaylistTrack from "./PlaylistTrack";
+import dotenv from "dotenv";
 
+dotenv.config();
 /**
  * Object model representation of Track table
  */
@@ -52,7 +54,7 @@ class TrackCreator extends ModelCreator {
       },
       {
         sequelize,
-        tableName: "track",
+        tableName: process.env.DB_TRACK_TABLE_NAME,
         timestamps: false,
       }
     );

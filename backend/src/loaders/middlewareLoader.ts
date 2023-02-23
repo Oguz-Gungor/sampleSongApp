@@ -2,57 +2,58 @@ import BodyParser from "body-parser";
 import { Express, RequestHandler } from "express";
 import AuthMiddleware from "../middlewares/AuthMiddleware";
 import LoggingMiddleware from "../middlewares/LoggingMiddleware";
+import APIConfig from "../config/APIConfig.json";
 import cors from "cors";
 import dotenv from "dotenv";
+import { Requests } from "./routingLoader";
 
 dotenv.config();
 
 /**
-   * To load middlewares in startup phase
-   * @param app express app
-   */
-export default function middlewareLoader(app: Express){
+ * To load middlewares in startup phase
+ * @param app express app
+ */
+export default function middlewareLoader(app: Express) {
+  //Middleware to specify allowed request types, content and source
+  app.use(cors());
+  app.use(BodyParser.urlencoded({ extended: true }));
+  app.use(BodyParser.json());
+  app.use(BodyParser.raw());
 
-    //Middleware to specify allowed request types, content and source
-    app.use(cors());
-    app.use(BodyParser.urlencoded({ extended: true }));
-    app.use(BodyParser.json());
-    app.use(BodyParser.raw());
-
-    interface IExcludedRequest {
+  interface IExcludedRequest {
     path: string;
     //todo : may be converted to enum
     method: string;
-    }
-    //Method to exclude given request struct from middleware
-    const excludePaths =
+  }
+  //Method to exclude given request struct from middleware
+  const excludePaths =
     (
-        requestList: IExcludedRequest[],
-        middleware: RequestHandler
+      requestList: IExcludedRequest[],
+      middleware: RequestHandler
     ): RequestHandler =>
     (req, res, next) => {
-        if (
+      if (
         requestList.some(
-            ({ path, method }) => path === req.path && method === req.method
+          ({ path, method }) => path === req.path && method === req.method
         )
-        ) {
+      ) {
         return next();
-        } else {
+      } else {
         return middleware(req, res, next);
-        }
+      }
     };
 
-    //Middleware to log requests
-    app.use(LoggingMiddleware.requestLogger);
+  //Middleware to log requests
+  app.use(LoggingMiddleware.requestLogger);
 
-    //Middleware to verify user in all requests except given paths and methods
-    app.use(
+  //Middleware to verify user in all requests except given paths and methods
+  app.use(
     excludePaths(
-        [
-        { path: "/login", method: "GET" },
-        { path: "/register", method: "POST" },
-        ],
-        AuthMiddleware.validateToken
+      [
+        { path: APIConfig.LOGIN, method: Requests.GET },
+        { path: APIConfig.REGISTER, method: Requests.POST },
+      ],
+      AuthMiddleware.validateToken
     )
-    );
+  );
 }
