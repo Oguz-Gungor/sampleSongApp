@@ -1,6 +1,5 @@
 import { Sequelize, Model, DataTypes } from "sequelize";
 import LoggingMiddleware from "../middlewares/LoggingMiddleware";
-import { sequelize } from "../server";
 import { ModelCreator } from "./ModelCreator";
 import PlaylistTrack from "./PlaylistTrack";
 import Track from "./Track";

@@ -1,7 +1,7 @@
 import { IRequestInterface } from "../interfaces/RequestInterfaces";
+import { sequelize } from "../loaders/databaseLoader";
 import PlaylistTrack from "../model/PlaylistTrack";
 import Track from "../model/Track";
-import { sequelize } from "../server";
 
 
 /**
