@@ -5,63 +5,48 @@ import Form from "../../../components/Input/Form";
 import TextInput from "../../../components/Input/TextInput";
 import RouteLink from "../../../components/Link/RouteLink";
 import Page from "../../../components/Page/Page";
-import {
-  authHandler,
-  ILoginStateStruct,
-  useAuth,
-} from "../../../util/CustomHooks";
 import LabelConfig from "../../../config/LabelConfig.json";
 import RouteConfig from "../../../config/RouteConfig.json";
-import "./Login.scss";
+import withAuth from "../../../util/hocs/withAuth";
+import { IAuthContainerProps } from "../../../util/CommonInterfaces";
 
 /**
  * Login page container to display login form on screen
  * @returns Login page container
  */
-export default function Login() {
-  const { showLoader, setLoginStatus } = useAuth();
+function Login(props: IAuthContainerProps) {
   return (
-    <Page className="auth">
+    <Page className={`login ${props.className}`}>
       <Card>
-        {showLoader ? (
-          <>...</>
-        ) : (
-          <>
-            <div className="flex-column">
-              <Form
-                className="login-form"
-                onSubmit={(data) => loginHandler(data, setLoginStatus)}
-              >
-                <TextInput
-                  label="username"
-                  id={LabelConfig.AUTH_FORM_USERNAME_LABEL}
-                />
-                <TextInput
-                  label="password"
-                  id={LabelConfig.AUTH_FORM_PASSWORD_LABEL}
-                />
-              </Form>
-            </div>
-            <div className="flex-row button-container">
-              <RouteLink link={RouteConfig.REGISTER}>
-                {LabelConfig.REGISTER_LABEL}
+        <div className="flex-column">
+          <Form
+            className="login-form"
+            onSubmit={props.onSubmit}
+            submitButtonLabel={LabelConfig.LOGIN_LABEL}
+            requiredAttributes={["username", "password"]}
+            secondaryButton={
+              <RouteLink link={RouteConfig.REGISTER} className="route-link">
+                {LabelConfig.REGISTER_LABEL + " Page"}
               </RouteLink>
-            </div>
-          </>
-        )}
+            }
+          >
+            <TextInput
+              label="username"
+              id={LabelConfig.AUTH_FORM_USERNAME_LABEL}
+            />
+            <TextInput
+              label="password"
+              id={LabelConfig.AUTH_FORM_PASSWORD_LABEL}
+            />
+          </Form>
+        </div>
       </Card>
     </Page>
   );
 }
 
 /**
- * Commit login request with given form data and set login status respect to REST response
- * @param data form data
- * @param setLoginStatus login status dispatcher
+ * Login page container to display login form on screen via withAuth logic
  */
-const loginHandler = (
-  data: any,
-  setLoginStatus: React.Dispatch<React.SetStateAction<ILoginStateStruct>>
-) => {
-  authHandler(setLoginStatus, getLoginConfig(data));
-};
+//export table inside withAuth higher order component to give onSubmit function to component and handle authorization cycle with given request config via hoc
+export default withAuth(getLoginConfig, Login);

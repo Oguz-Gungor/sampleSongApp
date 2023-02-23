@@ -12,7 +12,7 @@ const login = async (req: Request, res: Response, next: NextFunction) =>
   withErrorHandler(async () => {
     const requestUsername = req.query.username as string;
     const requestPassword = req.query.password as string;
-    wrapServiceResponse(
+    await wrapServiceResponse(
       res,
       AuthService.login(requestUsername, requestPassword)
     );

@@ -1,5 +1,6 @@
 import { AxiosRequestConfig } from "axios";
 import React from "react";
+import { ILoginStateStruct } from "./CustomHooks";
 
 /**
  * Common attributes for implemented components
@@ -14,8 +15,8 @@ export interface IComponentProps {
 /**
  * Properties of fetcher component,i.e. components that are wrapped with withRequest higher order component
  */
-export interface IFetcherComponentProps<T> extends JSX.IntrinsicAttributes{
-   /**
+export interface IFetcherComponentProps<T> extends JSX.IntrinsicAttributes {
+  /**
    * response payload as fetcher component prop
    */
   payload: T | null;
@@ -25,6 +26,18 @@ export interface IFetcherComponentProps<T> extends JSX.IntrinsicAttributes{
   setPostConfig: React.Dispatch<
     React.SetStateAction<AxiosRequestConfig<any> | null>
   >;
+}
+
+/**
+ * Properties of fetcher component,i.e. components that are wrapped with withAuth higher order component
+ */
+export interface IAuthContainerProps
+  extends JSX.IntrinsicAttributes,
+    IComponentProps {
+  /**
+   * submit action callback
+   */
+  onSubmit: (data: any) => void;
 }
 
 /**
@@ -59,4 +72,3 @@ export interface IInputProps extends IComponentProps {
    */
   id?: string;
 }
-

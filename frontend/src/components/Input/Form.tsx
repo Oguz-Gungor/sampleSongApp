@@ -1,6 +1,7 @@
 import * as React from "react";
 import { IWrapperComponent } from "../../util/CommonInterfaces";
-import "./Form.scss"
+import LabelConfig from "../../config/LabelConfig.json";
+import "./Form.scss";
 
 /**
  * Form data attributes additional to IWrapperComponentProps
@@ -8,9 +9,21 @@ import "./Form.scss"
 export interface IFormAttributes extends IWrapperComponent {
   /**
    * Callback to be handled on submit
-   * @param form current structure of form 
+   * @param form current structure of form
    */
   onSubmit?: (form: { [key: string]: any }) => void;
+  /**
+   * secondary button to be displayed next to send button
+   */
+  secondaryButton?: JSX.Element;
+  /**
+   * Text to be presented inside submit button
+   */
+  submitButtonLabel?: string;
+  /**
+   * List of required attributes
+   */
+  requiredAttributes?: string[];
 }
 
 /**
@@ -40,7 +53,20 @@ export default function Form(props: IFormAttributes) {
     >
       <div className="form-elements-container">
         {props.children}
-        <input className="submit-button" type={"submit"} />
+        <div className="flex-row button-container">
+          <input
+            className="submit-button"
+            type={"submit"}
+            value={props.submitButtonLabel ?? LabelConfig.SEND_BUTTON_LABEL}
+            disabled={
+              props.requiredAttributes &&
+              props.requiredAttributes.some(
+                (attribute) => formData[attribute] == null
+              )
+            }
+          />
+          {props.secondaryButton}
+        </div>
       </div>
     </form>
   );

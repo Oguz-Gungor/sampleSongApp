@@ -39,6 +39,7 @@ export default function TextInput(props: ITextInputProps) {
           props.onChange && props.onChange(event.target.value)
         }
         placeholder={props.placeHolder}
+        autoComplete="off"
       />
     </div>
   );

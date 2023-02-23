@@ -15,5 +15,6 @@
   "LOGOUT_LABEL": "logout",
   "ANTHEM_HEADER": "Anthem",
   "SPOTIFY_BAR_PLACEHOLDER": "Spotify Search...",
-  "TABLE_SEARCH_BAR_PLACEHOLDER_PREFIX": "Search for "
+  "TABLE_SEARCH_BAR_PLACEHOLDER_PREFIX": "Search for ",
+  "SEND_BUTTON_LABEL": "Send"
 }

@@ -186,24 +186,28 @@ enum LoginStatus {
 }
 
 /**
- * Login container authentication status structure
+ * Auth containers' authorization status structure
  */
 export interface ILoginStateStruct {
   /**
-   * authentication status for login container
+   * authorization status for auth containers
    */
   status: LoginStatus;
 }
 
+/**
+ * Custom hook to manage authorization cycle
+ * @returns dispatcher for login status
+ */
 export const useAuth = () => {
-  //state and dispatcher to contain current authentication status
+  //state and dispatcher to contain current authorization status
   const [loginStatus, setLoginStatus] = React.useState<ILoginStateStruct>({
     status: LoginStatus.CHECKING,
   });
 
   const navigate = useNavigate();
 
-  // If auth token exists on container load, validate existing token. Else, set current status as INITIAL(Unauthenticated)
+  // If authentication token exists on container load, validate existing token. Else, set current status as INITIAL(Unauthorized)
   React.useEffect(() => {
     if (window.sessionStorage.getItem(RequestConfig.TOKEN_KEY) == null) {
       setLoginStatus({ status: LoginStatus.INITIAL });
@@ -231,7 +235,7 @@ export const useAuth = () => {
 };
 
 /**
- * Commit login request with given form data and set login status respect to REST response
+ * Commit auth request with given request config and set login status respect to REST response
  * @param data form data
  * @param setLoginStatus login status dispatcher
  */
@@ -239,7 +243,7 @@ export const authHandler = (
   setLoginStatus: React.Dispatch<React.SetStateAction<ILoginStateStruct>>,
   requestConfig: AxiosRequestConfig
 ) => {
-  handleLoginEvents(wrappedAxios(requestConfig), setLoginStatus);
+  handleAuthEvents(wrappedAxios(requestConfig), setLoginStatus);
 };
 
 /**
@@ -249,15 +253,15 @@ export const authHandler = (
 const validateToken = (
   setLoginStatus: React.Dispatch<React.SetStateAction<ILoginStateStruct>>
 ) => {
-  handleLoginEvents(wrappedAxios(validateTokenConfig), setLoginStatus);
+  handleAuthEvents(wrappedAxios(validateTokenConfig), setLoginStatus);
 };
 
 /**
- * To handle login related response and set current authentication status accordingly
+ * To handle authorization related response and set current authorization status accordingly
  * @param request axios request config for request to be comitted
  * @param setLoginStatus login status dispatcher
  */
-const handleLoginEvents = (
+const handleAuthEvents = (
   request: Promise<any>,
   setLoginStatus: React.Dispatch<React.SetStateAction<ILoginStateStruct>>
 ) => {
