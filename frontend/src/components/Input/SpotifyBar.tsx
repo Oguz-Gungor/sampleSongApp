@@ -8,6 +8,7 @@ import Table from "../InformationElements/Table";
 import { columnList } from "../../containers/Tables/TrackTable";
 import { wrappedAxios } from "../../util/UtilFunctions";
 import RequestReducer from "../../redux/RequestReducer";
+import LabelConfig from "../../config/LabelConfig.json";
 
 /**
  * SpotifyBar component to generate a content wrapped with search functionality from spotify api
@@ -59,7 +60,7 @@ export default function SpotifyBar(props: ITextInputProps) {
     <div className={`flex-column spotify-bar ${props.className}`}>
       <TextInput
         onChange={(value) => setSearchText(value)}
-        placeHolder={props.placeHolder}
+        placeHolder={LabelConfig.SPOTIFY_BAR_PLACEHOLDER}
       />
       {rows && rows.length > 0 && (
         <div className="extend-wrapper">

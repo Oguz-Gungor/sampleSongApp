@@ -1,3 +1,5 @@
+import RequestConfig from "../config/RequestConfig.json"
+
 enum ActionType {
   PLAYLISTS,
   SPOTIFY_TOKEN,
@@ -73,8 +75,8 @@ const reducer = (
   }
 };
 
-const pending = (actionType: ActionType) => actionType + "_PENDING";
-const error = (actionType: ActionType) => actionType + "_ERROR";
-const success = (actionType: ActionType) => actionType + "_SUCCESS";
+const pending = (actionType: ActionType) => actionType + RequestConfig.PENDING_STATE;
+const error = (actionType: ActionType) => actionType + RequestConfig.ERROR_STATE;
+const success = (actionType: ActionType) => actionType + RequestConfig.SUCCESS_STATE;
 
 export default { ActionType, reducer, pending, error, success };

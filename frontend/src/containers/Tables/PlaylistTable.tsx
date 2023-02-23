@@ -8,14 +8,15 @@ import TextInput from "../../components/Input/TextInput";
 import Table from "../../components/InformationElements/Table";
 import withReduxFetch from "../../util/hocs/withReduxFetch";
 import RequestReducer from "../../redux/RequestReducer";
+import LabelConfig from "../../config/LabelConfig.json";
 
 /**
  * list of columns in playlist table
  */
 //todo : define interface
 const columnList = [
-  { key: "name", label: "Name" },
-  { key: "trackCount", label: "Track Count" },
+  { key: "name", label: LabelConfig.PLAYLIST_NAME_COLUMN },
+  { key: "trackCount", label: LabelConfig.PLAYLIST_TRACK_COUNT_COLUMN },
 ];
 
 /**
@@ -50,7 +51,10 @@ function AddPlaylist({ setPostConfig }: IFetcherComponentProps<any[] | null>) {
           <Form
             onSubmit={(formData) => setPostConfig(addPlaylistConfig(formData))}
           >
-            <TextInput id="name" placeHolder="Playlist Name" />
+            <TextInput
+              id="name"
+              placeHolder={LabelConfig.ADD_PLAYLIST_PLACEHOLDER}
+            />
           </Form>
           <span onClick={() => setIsClicked(false)}>cancel</span>
         </>
@@ -68,9 +72,7 @@ function AddPlaylist({ setPostConfig }: IFetcherComponentProps<any[] | null>) {
 // export default withLocalFetch(() => getPlaylistConfig, PlayListTable);
 export default withReduxFetch(
   () => getPlaylistConfig,
-  (state) => {
-    return state.request.playlists;
-  },
+  (state) => state.request.playlists,
   RequestReducer.ActionType.PLAYLISTS,
   PlayListTable
 );

@@ -1,13 +1,14 @@
 import { generateQueryParams } from "../util/UtilFunctions";
+import APIConfig from "../config/APIConfig.json";
 
 /**
  * Axios config generator to handle login operation via request
  * @param data Form data to be used in login request
- * @returns Generated axios config to handle login operation 
+ * @returns Generated axios config to handle login operation
  */
 export const getLoginConfig = (data: any) => ({
   method: "get",
-  url: `/login${generateQueryParams(data)}`,
+  url: `${APIConfig.LOGIN}${generateQueryParams(data)}`,
   headers: {},
 });
 
@@ -16,7 +17,15 @@ export const getLoginConfig = (data: any) => ({
  */
 export const validateTokenConfig = {
   method: "get",
-  url: "/validate",
+  url: APIConfig.VALIDATE,
   headers: {},
 };
 
+export const getRegisterConfig = (data: any) => ({
+  method: "post",
+  url: APIConfig.REGISTER,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  data: data,
+});

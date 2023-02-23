@@ -4,6 +4,7 @@ import "./App.scss";
 import Login from "./containers/Pages/Login/Login";
 import MainPanel from "./containers/Pages/MainPanel/MainPanel";
 import Register from "./containers/Pages/Register/Register";
+import AppRoutes from "./config/RouteConfig.json";
 
 /**
  * Wrapper App function to set router
@@ -13,9 +14,9 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/*" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/main" element={<MainPanel />} />
+        <Route path={AppRoutes.ALL} element={<Login />} />
+        <Route path={AppRoutes.REGISTER} element={<Register />} />
+        <Route path={AppRoutes.MAIN} element={<MainPanel />} />
       </Routes>
     </>
   );

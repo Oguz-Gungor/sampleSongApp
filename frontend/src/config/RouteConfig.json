@@ -1,0 +1,6 @@
+{
+    "ALL" : "/*",
+    "MAIN":"/main",
+    "LOGIN":"/login",
+    "REGISTER": "/register"
+}

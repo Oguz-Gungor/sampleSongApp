@@ -1,3 +1,4 @@
+import APIConfig from "../config/APIConfig.json";
 import { generateQueryParams } from "../util/UtilFunctions";
 
 /**
@@ -7,7 +8,7 @@ import { generateQueryParams } from "../util/UtilFunctions";
  */
 export const getTracksConfig = ({ playlistId }: any) => ({
     method: "get",
-    url: `/tracks${generateQueryParams({ id: playlistId })}`,
+    url: `${APIConfig.TRACKS}${generateQueryParams({ id: playlistId })}`,
     headers: {},
   });
   

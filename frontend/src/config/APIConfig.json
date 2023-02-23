@@ -1,0 +1,10 @@
+{
+  "LOGIN": "/login",
+  "VALIDATE": "/validate",
+  "REGISTER": "/register",
+  "PLAYLISTS": "/playlists",
+  "TRACKS": "/tracks",
+  "SPOTIFY_TOKEN": "/spotifyToken",
+  "SPOTIFY_SEARCH": "https://api.spotify.com/v1/search?q=",
+  "SPOTIFY_SEARCH_OPTIONS": "&type=track"
+}

@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { env } from "./tempConfig";
+import RequestConfig from "../config/RequestConfig.json";
 
 /**
  * An util function to wrap axios to add configured host before paths and add authorization resides in session storage
@@ -9,10 +9,10 @@ import { env } from "./tempConfig";
 export const wrappedAxios = (requestConfig: AxiosRequestConfig) =>
   axios({
     ...requestConfig,
-    url: env?.API + (requestConfig?.url ?? ""),
+    url: RequestConfig?.API + (requestConfig?.url ?? ""),
     headers: {
       ...requestConfig.headers,
-      Authorization: `${env.TOKEN_KEY} ${window.sessionStorage.getItem(env.TOKEN_KEY)}`,
+      Authorization: `${RequestConfig.TOKEN_KEY} ${window.sessionStorage.getItem(RequestConfig.TOKEN_KEY)}`,
     },
   });
 
@@ -30,5 +30,5 @@ export const generateQueryParams = (params: { [key: string]: any }) =>
  * To remove authentication token
  */
 export const removeToken = () => {
-  window.sessionStorage.removeItem(env.TOKEN_KEY);
+  window.sessionStorage.removeItem(RequestConfig.TOKEN_KEY);
 };

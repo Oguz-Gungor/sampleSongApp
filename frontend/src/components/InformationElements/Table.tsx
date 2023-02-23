@@ -1,6 +1,7 @@
 import * as React from "react";
 import { IComponentProps } from "../../util/CommonInterfaces";
 import SearchBar from "../Input/SearchBar";
+import LabelConfig from "../../config/LabelConfig.json";
 import "./Table.scss";
 
 /**
@@ -26,8 +27,8 @@ export interface ITableProps extends IComponentProps {
    */
   searchAttributes?: string[];
   /**
-   * View Element to be rendered as last row of table to handle add functionality 
-   * @returns 
+   * View Element to be rendered as last row of table to handle add functionality
+   * @returns
    */
   addRenderer?: () => React.ReactNode;
 }
@@ -54,7 +55,7 @@ export interface ITableColumn {
 export default function Table(props: ITableProps) {
   //state and dispatcher to handle selected row index
   const [selectedRow, setSelectedRow] = React.useState<number | null>(null);
-  
+
   //state and dispatcher to handle content data changes
   const [rows, setRows] = React.useState(props.rows);
 
@@ -70,20 +71,19 @@ export default function Table(props: ITableProps) {
           filterAttributes={props.searchAttributes}
           list={props.rows}
           callback={(list) => setRows(list)}
-          placeHolder={`Search for ${props.searchAttributes.reduce(
-            (prevValue, attribute) => {
-              const attributeLabel = props.columnList.find(
-                ({ key }) => key === attribute
-              )?.label;
-              if (attributeLabel == null) {
-                return prevValue;
-              }
-              return prevValue !== ""
-                ? `${prevValue},${attributeLabel}`
-                : attributeLabel;
-            },
-            ""
-          )}`}
+          placeHolder={`${
+            LabelConfig.TABLE_SEARCH_BAR_PLACEHOLDER_PREFIX
+          } ${props.searchAttributes.reduce((prevValue, attribute) => {
+            const attributeLabel = props.columnList.find(
+              ({ key }) => key === attribute
+            )?.label;
+            if (attributeLabel == null) {
+              return prevValue;
+            }
+            return prevValue !== ""
+              ? `${prevValue},${attributeLabel}`
+              : attributeLabel;
+          }, "")}`}
         />
       )}
       <table className={"table"}>

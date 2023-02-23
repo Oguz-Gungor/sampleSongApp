@@ -4,6 +4,7 @@ import Button from "../../components/Button/Button";
 import Table from "../../components/InformationElements/Table";
 import { IFetcherComponentProps } from "../../util/CommonInterfaces";
 import withLocalFetch from "../../util/hocs/withLocalFetch";
+import LabelConfig from "../../config/LabelConfig.json";
 import "./TrackTable.scss";
 
 /**
@@ -11,9 +12,9 @@ import "./TrackTable.scss";
  */
 //todo : define interface
 export const columnList = [
-  { key: "track", label: "Track" },
-  { key: "album", label: "Album" },
-  { key: "artist", label: "Artist" },
+  { key: "track", label: LabelConfig.TRACKLIST_TRACK_COLUMN },
+  { key: "album", label: LabelConfig.TRACKLIST_ALBUM_COLUMN },
+  { key: "artist", label: LabelConfig.TRACKLIST_ARTIST_COLUMN },
 ];
 
 /**
@@ -35,12 +36,12 @@ function TrackTable(props: IFetcherComponentProps<any[]>) {
       rows={props.payload}
       columnList={columnList}
       searchAttributes={columnList.map(({ key }) => key)}
-      expandRenderer={(row) => <TrackTableExpandRenderer/>}
+      expandRenderer={(row) => <TrackTableExpandRenderer row={row} />}
     />
   );
 }
 
-const TrackTableExpandRenderer = () => (
+const TrackTableExpandRenderer = (props: { row: any }) => (
   <div className="flex-row expand-flex-row">
     <Button>Set Anthem</Button>
     <Button>Remove</Button>

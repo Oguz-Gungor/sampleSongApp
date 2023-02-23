@@ -1,9 +1,11 @@
+import APIConfig from "../config/APIConfig.json";
+
 /**
  * Axios config to fetch playlists from backend
  */
 export const getPlaylistConfig = {
     method: "get",
-    url: "/playlists",
+    url: APIConfig.PLAYLISTS,
     headers: {},
   }
 
@@ -14,7 +16,7 @@ export const getPlaylistConfig = {
    */
 export const addPlaylistConfig =(playlist:any)=> ({
   method: "post",
-  url: "/playlists",
+  url: APIConfig.PLAYLISTS,
   headers: {},  
   data: playlist,
 })

@@ -4,6 +4,9 @@ import axios, { AxiosRequestConfig } from "axios";
 import { useNavigate } from "react-router-dom";
 import { removeToken, wrappedAxios } from "./UtilFunctions";
 import RequestReducer from "../redux/RequestReducer";
+import { validateTokenConfig } from "../api/Auth";
+import RequestConfig from "../config/RequestConfig.json";
+import RouteConfig from "../config/RouteConfig.json"
 
 /**
  * Returned structure of useLocalFetch hook
@@ -37,7 +40,7 @@ interface ILocalFetchHookResult<T> {
  * @returns object that contains response internals, pending status, error message and related post config dispatcher
  */
 export function useLocalFetch<T>(
-  getRequestConfig: AxiosRequestConfig,
+  getRequestConfig: AxiosRequestConfig | null,
   wrap = true,
   reFetch = false
 ): ILocalFetchHookResult<T> {
@@ -159,7 +162,7 @@ const useFetch = (
         .catch((error) => {
           if (error.response.status === 403) {
             removeToken();
-            navigate("/login");
+            navigate(RouteConfig.LOGIN);
           }
           setError(error);
         })
@@ -169,4 +172,104 @@ const useFetch = (
     }
   };
   return { setPostConfig };
+};
+
+/**
+ * Possible authorization states
+ */
+enum LoginStatus {
+  CHECKING,
+  INITIAL,
+  PENDING,
+  SUCCESS,
+  FAIL,
+}
+
+/**
+ * Login container authentication status structure
+ */
+export interface ILoginStateStruct {
+  /**
+   * authentication status for login container
+   */
+  status: LoginStatus;
+}
+
+export const useAuth = () => {
+  //state and dispatcher to contain current authentication status
+  const [loginStatus, setLoginStatus] = React.useState<ILoginStateStruct>({
+    status: LoginStatus.CHECKING,
+  });
+
+  const navigate = useNavigate();
+
+  // If auth token exists on container load, validate existing token. Else, set current status as INITIAL(Unauthenticated)
+  React.useEffect(() => {
+    if (window.sessionStorage.getItem(RequestConfig.TOKEN_KEY) == null) {
+      setLoginStatus({ status: LoginStatus.INITIAL });
+    } else {
+      validateToken(setLoginStatus);
+    }
+  }, []);
+
+  // If login status changed to success, opens main container
+  React.useEffect(() => {
+    if (loginStatus.status === LoginStatus.SUCCESS) {
+      navigate(RouteConfig.MAIN);
+    }
+  }, [loginStatus.status]);
+
+  /**
+   * variable to state whether loader should be shown or not
+   */
+  const showLoader =
+    loginStatus.status === LoginStatus.CHECKING ||
+    loginStatus.status === LoginStatus.SUCCESS ||
+    loginStatus.status === LoginStatus.PENDING;
+
+  return { showLoader, setLoginStatus };
+};
+
+/**
+ * Commit login request with given form data and set login status respect to REST response
+ * @param data form data
+ * @param setLoginStatus login status dispatcher
+ */
+export const authHandler = (
+  setLoginStatus: React.Dispatch<React.SetStateAction<ILoginStateStruct>>,
+  requestConfig: AxiosRequestConfig
+) => {
+  handleLoginEvents(wrappedAxios(requestConfig), setLoginStatus);
+};
+
+/**
+ * Commit validation request to validate existing token and set login status respect to validation result
+ * @param setLoginStatus login status dispatcher
+ */
+const validateToken = (
+  setLoginStatus: React.Dispatch<React.SetStateAction<ILoginStateStruct>>
+) => {
+  handleLoginEvents(wrappedAxios(validateTokenConfig), setLoginStatus);
+};
+
+/**
+ * To handle login related response and set current authentication status accordingly
+ * @param request axios request config for request to be comitted
+ * @param setLoginStatus login status dispatcher
+ */
+const handleLoginEvents = (
+  request: Promise<any>,
+  setLoginStatus: React.Dispatch<React.SetStateAction<ILoginStateStruct>>
+) => {
+  request
+    .then((response) => {
+      switch (response.status) {
+        case 200:
+          window.sessionStorage.setItem(RequestConfig.TOKEN_KEY, response.data);
+          setLoginStatus({ status: LoginStatus.SUCCESS });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
