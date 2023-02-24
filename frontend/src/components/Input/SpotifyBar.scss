@@ -24,6 +24,23 @@
     .table-container {
       height: 12em;
       overflow: scroll;
+      .combobox-input{
+        select,option{
+          background-color: #1db954;
+          border: none;
+          border-radius: .2em;
+          width: 100%;
+          cursor: pointer;
+          user-select: none;
+          padding: .2em;
+          padding-left: .5em;
+          padding-right: .5em;
+        }
+        option{
+          background-color: #404040;
+          color: white;
+        }
+      }
     }
   }
 }

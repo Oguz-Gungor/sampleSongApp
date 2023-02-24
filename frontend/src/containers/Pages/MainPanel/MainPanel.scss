@@ -11,6 +11,16 @@
       z-index: 1;
       .route-link {
         margin-left: auto;
+        transition: all .3s;
+        background-color: #1db954;
+        border-radius: .2em;
+        padding: .2em;
+        padding-left: .5em;
+        padding-right: .5em;
+        &:hover{
+          background-color: #404040;
+          color: white;
+        }
       }
     }
     .content {
@@ -33,13 +43,13 @@
       }
       .anthem-card {
         width: 30%;
-        height: 19em;
+        height: 30%;
         .info-card-header {
           border-color: #1db954;
         }
         .info-card-label {
-          background: linear-gradient(to right, white, #1db954, white);
-          color: white;
+          color: #404040;
+          background: linear-gradient(to right, white, #1db954 15%,#1db954 85%, white);
         }
       }
     }
