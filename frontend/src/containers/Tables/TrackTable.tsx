@@ -12,6 +12,8 @@ import LabelConfig from "../../config/LabelConfig.json";
 import "./TrackTable.scss";
 import { useReduxFetch } from "../../util/CustomHooks";
 import RequestReducer from "../../redux/RequestReducer";
+import { useDispatch } from "react-redux";
+import ApplicationReducer from "../../redux/ApplicationReducer";
 
 /**
  * list of columns in track table
@@ -61,12 +63,16 @@ const TrackTableExpandRenderer = (props: any) => {
     RequestReducer.ActionType.ANTHEM
   );
 
+  const dispatch = useDispatch();
+
   return (
     <div className="flex-row expand-flex-row">
       <Button
         onClick={() => {
           setPostConfig(setAnthemConfig({ trackInfo: props.row }));
         }}
+        onMouseOver={()=>dispatch({type:ApplicationReducer.ActionType.ANTHEM_PREVIEW,payload:{image:props.row.image,label:props.row.track}})}
+        onMouseLeave={()=>dispatch({type:ApplicationReducer.ActionType.ANTHEM_PREVIEW,payload:null})}
       >
         Set Anthem
       </Button>

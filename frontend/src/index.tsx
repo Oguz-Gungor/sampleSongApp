@@ -7,6 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { configureStore } from "@reduxjs/toolkit";
 import RequestReducer from "./redux/RequestReducer";
+import ApplicationReducer from "./redux/ApplicationReducer";
 
 /**
  * Created redux store
@@ -14,6 +15,7 @@ import RequestReducer from "./redux/RequestReducer";
 const store = configureStore({
   reducer: {
     request: RequestReducer.reducer,
+    application: ApplicationReducer.reducer
   },
 });
 

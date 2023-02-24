@@ -27,7 +27,7 @@ export default function MainPanel() {
     RequestReducer.ActionType.SPOTIFY_TOKEN
   );
   const {payload} = useReduxFetch(getAnthemConfig,(state: any) => state?.request?.anthem,RequestReducer.ActionType.ANTHEM);
-  console.log(payload);
+  const anthemPreview = useSelector((state:any)=>state.application.anthemPreview);
   return (
     <Page className="main">
       <div className="flex-column main-container">
@@ -44,10 +44,10 @@ export default function MainPanel() {
           <InfoCard
             className="anthem-card"
             imageSource={
-              payload?.image
+              anthemPreview?.image ?? payload?.image
             }
             header={LabelConfig.ANTHEM_HEADER}
-            label={payload?.track}
+            label={anthemPreview?.label ?? payload?.track}
           />
         </div>
       </div>

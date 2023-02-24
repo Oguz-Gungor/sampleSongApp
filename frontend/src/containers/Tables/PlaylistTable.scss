@@ -34,11 +34,33 @@
             padding-right: 1em;
             height: 100%;
           }
-        }
-        .submit-button {
-          margin-left: auto;
-        }
+        }        
       }
+    }
+    .submit-button, .button  {
+      margin-left: auto;
+      transition: all 0.3s;
+      background-color: #404040;
+      border-radius: 1em;
+      font-size: 16px;
+      color: white;
+      cursor: pointer;
+      border: solid;
+      border-color: transparent;
+      padding: 0.2em;
+      padding-left: 1em;
+      padding-right: 1em;
+      &:hover {
+        border-color: #404040;
+        background-color: #1db954;
+      }
+      &:focus {
+        background-color: black;
+      }
+    }
+
+    .button{
+      margin-right: 1em;
     }
   }
 }

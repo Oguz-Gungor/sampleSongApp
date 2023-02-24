@@ -2,8 +2,13 @@ import * as React from "react";
 import { IWrapperComponent } from "../../util/CommonInterfaces";
 import "./Button.scss"
 
+/**
+ * Prop attributes of wrapped Button component
+ */
 interface IButtonComponent extends IWrapperComponent {
   onClick?: () => void;
+  onMouseOver?:()=>void;
+  onMouseLeave?: ()=>void;
 }
 
 /**
@@ -13,7 +18,7 @@ interface IButtonComponent extends IWrapperComponent {
  */
 export default function Button(props: IButtonComponent) {
   return (
-    <button className={`button ${props.className}`} onClick={props.onClick}>
+    <button className={`button ${props.className}`} onClick={props.onClick} onMouseOver={props.onMouseOver} onMouseLeave={props.onMouseLeave}>
       {props.children}
     </button>
   );

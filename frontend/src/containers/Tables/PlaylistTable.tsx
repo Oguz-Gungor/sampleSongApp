@@ -9,6 +9,7 @@ import Table from "../../components/InformationElements/Table";
 import withReduxFetch from "../../util/hocs/withReduxFetch";
 import RequestReducer from "../../redux/RequestReducer";
 import LabelConfig from "../../config/LabelConfig.json";
+import Button from "../../components/Button/Button";
 
 /**
  * list of columns in playlist table
@@ -56,7 +57,7 @@ function AddPlaylist({ setPostConfig }: IFetcherComponentProps<any[] | null>) {
               placeHolder={LabelConfig.ADD_PLAYLIST_PLACEHOLDER}
             />
           </Form>
-          <span onClick={() => setIsClicked(false)}>cancel</span>
+          <Button onClick={() => setIsClicked(false)}>{LabelConfig.CANCEL_LABEL}</Button>
         </>
       ) : (
         <span onClick={() => setIsClicked(true)}>+</span>
