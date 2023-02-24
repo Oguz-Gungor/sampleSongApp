@@ -23,7 +23,7 @@
     }
   }
   .expand-row{
-    transition: font-size .3s;
+    transition: all .3s;
     font-size: 0px;
     opacity: 0;
     &.expand{
