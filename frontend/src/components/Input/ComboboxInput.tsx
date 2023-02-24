@@ -1,5 +1,5 @@
 import { IInputProps } from "../../util/CommonInterfaces";
-
+import LabelConfig from "../../config/LabelConfig.json";
 /**
  * combobox input props additional to input props
  */
@@ -22,15 +22,27 @@ export interface ITextInputProps extends IInputProps {
  */
 export default function ComboboxInput(props: ITextInputProps) {
   return (
-    <div className={`flex-column text-input ${props.className}`}>
+    <div className={`flex-column combobox-input ${props.className}`}>
       {props.label && <span>{props.label}</span>}
-      <input
+      <select
         id={props.id}
-        type={"text"}
-        onChange={(event) =>
-          props.onChange && props.onChange(event.target.value)
-        }
-      />
+        onChange={(event) => props.onChange && props.onChange(event.target.value)}
+      >
+        <option hidden disabled selected>
+          {LabelConfig.PLAYLIST_SELECT_PLACEHOLDER}
+        </option>
+        {props.options.map(({ id, label }) => (
+          <option value={id}>{label}</option>
+        ))}
+      </select>
     </div>
   );
 }
+
+// <input
+//   id={props.id}
+//   type={"text"}
+//   onChange={(event) =>
+//     props.onChange && props.onChange(event.target.value)
+//   }
+// />

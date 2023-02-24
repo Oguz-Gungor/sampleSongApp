@@ -1,15 +1,17 @@
-import RequestConfig from "../config/RequestConfig.json"
+import RequestConfig from "../config/RequestConfig.json";
 
 enum ActionType {
   PLAYLISTS,
   SPOTIFY_TOKEN,
+  ANTHEM,
 }
 
-const elementInitialState = { isLoading: false, error: null, payload: [] };
+const elementInitialState = { isLoading: false, error: null, payload: null };
 
 const initialState: IRequestContentInitialState = {
-  playlists: elementInitialState,
+  playlists: { ...elementInitialState, payload: [] },
   spotifyToken: elementInitialState,
+  anthem: elementInitialState,
 };
 
 interface IRequestElementState {
@@ -21,6 +23,7 @@ interface IRequestElementState {
 interface IRequestContentInitialState {
   playlists: IRequestElementState;
   spotifyToken: IRequestElementState;
+  anthem: IRequestElementState;
 }
 
 const reducer = (
@@ -70,13 +73,37 @@ const reducer = (
           payload: action.payload,
         },
       };
+    case pending(ActionType.ANTHEM):
+      return {
+        ...state,
+        anthem: { ...state.anthem, isLoading: action.payload },
+      };
+    case error(ActionType.ANTHEM):
+      return {
+        ...state,
+        anthem: {
+          ...state.anthem,
+          error: action.payload,
+        },
+      };
+    case success(ActionType.ANTHEM):
+      return {
+        ...state,
+        anthem: {
+          ...state.anthem,
+          payload: action.payload,
+        },
+      };
     default:
       return state;
   }
 };
 
-const pending = (actionType: ActionType) => actionType + RequestConfig.PENDING_STATE;
-const error = (actionType: ActionType) => actionType + RequestConfig.ERROR_STATE;
-const success = (actionType: ActionType) => actionType + RequestConfig.SUCCESS_STATE;
+const pending = (actionType: ActionType) =>
+  actionType + RequestConfig.PENDING_STATE;
+const error = (actionType: ActionType) =>
+  actionType + RequestConfig.ERROR_STATE;
+const success = (actionType: ActionType) =>
+  actionType + RequestConfig.SUCCESS_STATE;
 
 export default { ActionType, reducer, pending, error, success };

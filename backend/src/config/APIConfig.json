@@ -4,5 +4,6 @@
   "REGISTER": "/register",
   "PLAYLISTS": "/playlists",
   "TRACKS": "/tracks",
-  "SPOTIFY_TOKEN": "/spotifyToken"
+  "SPOTIFY_TOKEN": "/spotifyToken",
+  "ANTHEM": "/anthem"
 }

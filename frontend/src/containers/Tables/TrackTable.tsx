@@ -1,11 +1,17 @@
 import * as React from "react";
-import { getTracksConfig } from "../../api/Tracks";
+import {
+  deleteTrack,
+  getTracksConfig,
+  setAnthemConfig,
+} from "../../api/Tracks";
 import Button from "../../components/Button/Button";
 import Table from "../../components/InformationElements/Table";
 import { IFetcherComponentProps } from "../../util/CommonInterfaces";
 import withLocalFetch from "../../util/hocs/withLocalFetch";
 import LabelConfig from "../../config/LabelConfig.json";
 import "./TrackTable.scss";
+import { useReduxFetch } from "../../util/CustomHooks";
+import RequestReducer from "../../redux/RequestReducer";
 
 /**
  * list of columns in track table
@@ -29,24 +35,53 @@ interface ITrackTableProps extends JSX.IntrinsicAttributes {
  * @param props an object contains request result as payload attribute and post request dispatcher for related content
  * @returns Track table element view
  */
-function TrackTable(props: IFetcherComponentProps<any[]>) {
+function TrackTable(props: ITrackTableProps & IFetcherComponentProps<any[]>) {
+  console.log(props.payload);
   return (
     <Table
       className="track-table"
       rows={props.payload}
       columnList={columnList}
       searchAttributes={columnList.map(({ key }) => key)}
-      expandRenderer={(row) => <TrackTableExpandRenderer row={row} />}
+      expandRenderer={(row) => (
+        <TrackTableExpandRenderer
+          row={row}
+          setPostConfig={props.setPostConfig}
+          playlistId={props?.playlistId}
+        />
+      )}
     />
   );
 }
 
-const TrackTableExpandRenderer = (props: { row: any }) => (
-  <div className="flex-row expand-flex-row">
-    <Button>Set Anthem</Button>
-    <Button>Remove</Button>
-  </div>
-);
+const TrackTableExpandRenderer = (props: any) => {
+  const { setPostConfig } = useReduxFetch(
+    null,
+    (state) => state.request.anthem,
+    RequestReducer.ActionType.ANTHEM
+  );
+
+  return (
+    <div className="flex-row expand-flex-row">
+      <Button
+        onClick={() => {
+          setPostConfig(setAnthemConfig({ trackInfo: props.row }));
+        }}
+      >
+        Set Anthem
+      </Button>
+      <Button
+        onClick={() => {
+          props.setPostConfig(
+            deleteTrack({ trackId: props.row.id, playlistId: props.playlistId })
+          );
+        }}
+      >
+        Remove
+      </Button>
+    </div>
+  );
+};
 
 /**
  * Table to display list of tracks fetched from backend in given playlist

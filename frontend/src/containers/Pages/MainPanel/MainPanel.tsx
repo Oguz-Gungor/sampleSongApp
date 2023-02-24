@@ -12,6 +12,8 @@ import SpotifyBar from "../../../components/Input/SpotifyBar";
 import RouteConfig from "../../../config/RouteConfig.json";
 import LabelConfig from "../../../config/LabelConfig.json";
 import "./MainPanel.scss";
+import { useSelector } from "react-redux";
+import { getAnthemConfig } from "../../../api/Tracks";
 
 /**
  * Main page container to display Main page elements(Playlist table, Info card, SearchBar , etc.)
@@ -24,6 +26,8 @@ export default function MainPanel() {
     (state) => state.request.spotifyToken,
     RequestReducer.ActionType.SPOTIFY_TOKEN
   );
+  const {payload} = useReduxFetch(getAnthemConfig,(state: any) => state?.request?.anthem,RequestReducer.ActionType.ANTHEM);
+  console.log(payload);
   return (
     <Page className="main">
       <div className="flex-column main-container">
@@ -40,10 +44,10 @@ export default function MainPanel() {
           <InfoCard
             className="anthem-card"
             imageSource={
-              "https://c-cl.cdn.smule.com/rs-s29/arr/e7/bc/bf4bae60-3fd0-4c4a-82e9-c2c56ce78140_1024.jpg"
+              payload?.image
             }
             header={LabelConfig.ANTHEM_HEADER}
-            label="Enchanters"
+            label={payload?.track}
           />
         </div>
       </div>

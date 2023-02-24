@@ -4,6 +4,7 @@ import { ModelCreator } from "./ModelCreator";
 import Playlist from "./Playlist";
 import PlaylistTrack from "./PlaylistTrack";
 import dotenv from "dotenv";
+import User from "./User";
 
 dotenv.config();
 /**
@@ -25,9 +26,9 @@ class TrackCreator extends ModelCreator {
   constructor() {
     super();
   }
-   /**
+  /**
    * Init Track table on system start (if not exists)
-   * @param sequelize 
+   * @param sequelize
    */
   public async init(sequelize: Sequelize): Promise<void> {
     await Track.init(
@@ -68,15 +69,16 @@ class TrackCreator extends ModelCreator {
   public setRelations(): void {
     Track.belongsToMany(Playlist.Playlist, {
       through: PlaylistTrack.PlaylistTrack,
-      constraints:true
+      constraints: true,
     });
+    Track.hasMany(User.User);
   }
 
-   /**
+  /**
    * Synchronize all changes with database
    */
   public async sync(): Promise<void> {
-    await Track.sync({alter:true});
+    await Track.sync({ alter: true });
   }
 }
 

@@ -70,7 +70,7 @@ function AddPlaylist({ setPostConfig }: IFetcherComponentProps<any[] | null>) {
  */
 // export table inside withLocalFetch higher order component to commit related request and retrieve response in props data
 // export default withLocalFetch(() => getPlaylistConfig, PlayListTable);
-export default withReduxFetch(
+export default withReduxFetch<{},any[]>(
   () => getPlaylistConfig,
   (state) => state.request.playlists,
   RequestReducer.ActionType.PLAYLISTS,

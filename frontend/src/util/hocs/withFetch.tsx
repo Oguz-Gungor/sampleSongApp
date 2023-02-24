@@ -11,7 +11,7 @@ import LabelConfig from "../../config/LabelConfig.json";
  */
 export default function withFetch<T, U>(
   fetchHook: any,
-  Component: React.FC<IFetcherComponentProps<U>>
+  Component: React.FC<IFetcherComponentProps<U> & T>
 ) {
   return (props: T) => {
     // Request cycle internals

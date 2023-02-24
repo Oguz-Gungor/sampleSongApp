@@ -29,7 +29,23 @@ export default function routingLoader(app: Express) {
     SpotifyMiddleware.checkSpotifyTrack,
     TrackController.addTrack
   );
+  app.delete(
+    APIConfig.TRACKS,
+    TrackController.removeTrackFromPlaylist
+  );
 
+  //anthem loader
+  app.post(
+    APIConfig.ANTHEM,
+    SpotifyMiddleware.checkSpotifyTrack,
+    TrackController.setAnthem
+  );
+  app.get(
+    APIConfig.ANTHEM,
+    TrackController.getAnthem
+  );
+  
+  
   //auth loader
   app.get(APIConfig.LOGIN, AuthController.login);
   app.post(APIConfig.REGISTER, AuthController.register);

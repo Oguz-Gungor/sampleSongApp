@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import AuthMiddleware from "../middlewares/AuthMiddleware";
 import TrackService from "../service/TrackService";
 import { withErrorHandler, wrapServiceResponse } from "./ControllerUtil";
 
@@ -23,7 +24,65 @@ const getTracks = async (req: Request, res: Response, next: NextFunction) =>
 const addTrack = async (req: Request, res: Response, next: NextFunction) =>
   withErrorHandler(async () => {
     const { trackInfo, playlistId } = req.body;
-    await wrapServiceResponse(res, TrackService.addTrack(trackInfo,playlistId));
+    await wrapServiceResponse(
+      res,
+      TrackService.addTrack(trackInfo, playlistId)
+    );
   }, next);
 
-export default { getTracks, addTrack };
+/**
+ * Controller to parse track information and user id in request content and call setAnthem service with parsed attributes
+ * @param req REST request
+ * @param res REST response
+ * @param next next handler
+ */
+const setAnthem = async (req: Request, res: Response, next: NextFunction) =>
+  withErrorHandler(async () => {
+    const { trackInfo } = req.body;
+    const userId = await AuthMiddleware.getUserIDFromToken(req);
+    await wrapServiceResponse(res, TrackService.setAnthem(trackInfo, userId));
+  }, next);
+
+/**
+ * Controller to parse user id in request content and call getAnthem service with parsed attributes
+ * @param req REST request
+ * @param res REST response
+ * @param next next handler
+ */
+const getAnthem = async (req: Request, res: Response, next: NextFunction) =>
+  withErrorHandler(async () => {
+    const userId = await AuthMiddleware.getUserIDFromToken(req);
+    await wrapServiceResponse(res, TrackService.getAnthem(userId));
+  }, next);
+
+/**
+ * Controller to parse user id in request content and call getAnthem service with parsed attributes
+ * @param req REST request
+ * @param res REST response
+ * @param next next handler
+ */
+const removeTrackFromPlaylist = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) =>
+  withErrorHandler(async () => {
+    const userId = await AuthMiddleware.getUserIDFromToken(req);
+    const trackId = req.query.trackId as string;
+    const playlistId = parseInt(req.query.playlistId as string);
+    console.log(req.query);
+    console.log(trackId, playlistId, userId);
+
+    await wrapServiceResponse(
+      res,
+      TrackService.removeTrackFromPlaylist(trackId, playlistId, userId)
+    );
+  }, next);
+
+export default {
+  getTracks,
+  addTrack,
+  setAnthem,
+  getAnthem,
+  removeTrackFromPlaylist,
+};

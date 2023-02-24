@@ -2,7 +2,8 @@ import { IRequestInterface } from "../interfaces/RequestInterfaces";
 import { sequelize } from "../loaders/databaseLoader";
 import PlaylistTrack from "../model/PlaylistTrack";
 import Track from "../model/Track";
-
+import User from "../model/User";
+import PlaylistService from "./PlaylistService";
 
 /**
  * To get Tracks from given playlist id
@@ -32,12 +33,17 @@ const getTracks = async (
  * @param playlistId id of playlist that track will be added to
  * @returns added track
  */
-const addTrack = async (trackInfo: any,playlistId:number): Promise<IRequestInterface<any>> => {
-  //to handle transaction for adding track to table and adding track to playlist-track relation 
+const addTrack = async (
+  trackInfo: any,
+  playlistId: number
+): Promise<IRequestInterface<any>> => {
+  //to handle transaction for adding track to table and adding track to playlist-track relation
   const track = await sequelize.transaction(async (t) => {
-    //add track
-    const track = await Track.Track.create(trackInfo, { transaction: t });
-    
+    //add or get track
+    const track =
+      (await Track.Track.findByPk(trackInfo.id)) ??
+      (await Track.Track.create(trackInfo, { transaction: t }));
+
     //link track with playlist
     await PlaylistTrack.PlaylistTrack.create(
       { PlaylistId: playlistId, TrackId: track.id },
@@ -47,5 +53,61 @@ const addTrack = async (trackInfo: any,playlistId:number): Promise<IRequestInter
   });
   return { status: 200, dto: track };
 };
+/**
+ * To remove track from playlist
+ * @param trackId Information of track to be added
+ * @param playlistId id of playlist that track will be added to
+ * @param userId id of requesting user
+ * @returns added track
+ */
+const removeTrackFromPlaylist = async (
+  trackId: any,
+  playlistId: number,
+  userId: any
+): Promise<IRequestInterface<any>> => {
+  await PlaylistTrack.PlaylistTrack.destroy({
+    where: { PlaylistId: playlistId, TrackId: trackId },
+  });
+  return await getTracks(playlistId);
+};
 
-export default { getTracks, addTrack };
+/**
+ * To set track as anthem for user
+ * @param trackInfo Information of track to be added
+ * @param userId id of requesting user
+ * @returns
+ */
+const setAnthem = async (
+  trackInfo: any,
+  userId: any
+): Promise<IRequestInterface<any>> => {
+  await sequelize.transaction(async (t) => {
+    const user = await User.User.findOne({ where: { id: userId } });
+    await user?.set("TrackId", trackInfo.id);
+    await user?.save({ transaction: t });
+  });
+  return { status: 200, dto: trackInfo };
+};
+
+/**
+ * To get anthem of user
+ * @param userId id of requesting user
+ * @returns
+ */
+const getAnthem = async (userId: any): Promise<IRequestInterface<any>> => {
+  const anthem = await sequelize.transaction(async (t) => {
+    const user = await User.User.findOne({ where: { id: userId } });
+    return await Track.Track.findOne({
+      where: { id: user?.dataValues.TrackId },
+    });
+  });
+  return { status: 200, dto: anthem };
+};
+
+export default {
+  getTracks,
+  addTrack,
+  setAnthem,
+  getAnthem,
+  removeTrackFromPlaylist,
+};

@@ -21,7 +21,7 @@ export interface ITableProps extends IComponentProps {
    * @param row selected row element
    * @returns element to be rendered on row click
    */
-  expandRenderer?: (row: any) => React.ReactNode;
+  expandRenderer?: (row: any, closeRow: () => void) => React.ReactNode;
   /**
    * Attributes to be searched in table
    */
@@ -118,7 +118,7 @@ export default function Table(props: ITableProps) {
                       }`}
                     >
                       {selectedRow != null && selectedRow === index
-                        ? props.expandRenderer(row)
+                        ? props.expandRenderer(row, () => setSelectedRow(null))
                         : "..."}
                     </td>
                   </tr>

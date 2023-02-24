@@ -34,7 +34,7 @@ class PlaylistTrackCreator extends ModelCreator {
       }
     );
     await PlaylistTrack.sync();
-    LoggingMiddleware.logger.info("Playlist table has been created");
+    LoggingMiddleware.logger.info("Playlist Track relation table has been created");
   }
 
   /**

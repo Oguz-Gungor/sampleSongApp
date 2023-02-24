@@ -4,6 +4,7 @@ import Playlist from "./Playlist";
 import bcrypt from "bcrypt";
 import LoggingMiddleware from "../middlewares/LoggingMiddleware";
 import dotenv from "dotenv";
+import Track from "./Track";
 
 dotenv.config();
 /**
@@ -25,7 +26,7 @@ class UserCreator extends ModelCreator {
   }
   /**
    * Init User table on system start (if not exists)
-   * @param sequelize 
+   * @param sequelize
    */
   public async init(sequelize: Sequelize): Promise<void> {
     await User.init(
@@ -33,7 +34,7 @@ class UserCreator extends ModelCreator {
         id: {
           type: DataTypes.INTEGER,
           autoIncrement: true,
-          primaryKey: true
+          primaryKey: true,
         },
         name: {
           type: DataTypes.STRING(255),
@@ -57,7 +58,7 @@ class UserCreator extends ModelCreator {
       }
     );
     await User.sync();
-    LoggingMiddleware.logger.info("User table has been created")
+    LoggingMiddleware.logger.info("User table has been created");
   }
 
   /**
@@ -65,13 +66,14 @@ class UserCreator extends ModelCreator {
    */
   public setRelations(): void {
     User.hasMany(Playlist.Playlist);
+    User.belongsTo(Track.Track);
   }
 
   /**
    * Synchronize all changes with database
    */
-  public async sync(): Promise <void> {
-    await User.sync({alter:true});
+  public async sync(): Promise<void> {
+    await User.sync({ alter: true });
   }
 }
 

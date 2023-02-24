@@ -12,7 +12,7 @@ import withFetch from "./withFetch";
  */
 export default function withLocalFetch<T, U>(
   getRequestConfig: (props: T) => AxiosRequestConfig,
-  Component: React.FC<IFetcherComponentProps<U>>
+  Component: React.FC<IFetcherComponentProps<U> & T>
 ) {
   return withFetch<T, U>(
     (props: T) => useLocalFetch<U>(getRequestConfig(props)),

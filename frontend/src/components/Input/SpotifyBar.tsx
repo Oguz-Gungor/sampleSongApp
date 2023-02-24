@@ -9,6 +9,9 @@ import { columnList } from "../../containers/Tables/TrackTable";
 import { wrappedAxios } from "../../util/UtilFunctions";
 import RequestReducer from "../../redux/RequestReducer";
 import LabelConfig from "../../config/LabelConfig.json";
+import APIConfig from "../../config/APIConfig.json";
+import ComboboxInput from "./ComboboxInput";
+import Form from "./Form";
 
 /**
  * SpotifyBar component to generate a content wrapped with search functionality from spotify api
@@ -16,7 +19,10 @@ import LabelConfig from "../../config/LabelConfig.json";
  * @returns Text input with utility, search from spotify API integration and style
  */
 export default function SpotifyBar(props: ITextInputProps) {
-  const playlists = useSelector((state: any) => state.request.playlists.payload);
+  const playlists = useSelector(
+    (state: any) => state.request.playlists.payload
+  );
+  console.log(playlists);
   //todo : debounce mechanism on setSearchText
   const [searchText, setSearchText] = React.useState("");
   const { payload, error, isLoading, setPostConfig } = useLocalFetch<any>(
@@ -68,19 +74,22 @@ export default function SpotifyBar(props: ITextInputProps) {
             className="track-table"
             rows={rows}
             columnList={columnList}
-            expandRenderer={(row) => (
-              <div
-                onClick={() =>
+            expandRenderer={(row, closeRow) => (
+              <ComboboxInput
+                options={playlists.map(({ id, name }: any) => ({
+                  id,
+                  label: name,
+                }))}
+                onChange={(id) => {
                   wrappedAxios({
                     method: "post",
-                    url: "/track",
+                    url: APIConfig.TRACKS,
                     headers: {},
-                    data: { trackInfo: row, playlistId: 1 },
-                  })
-                }
-              >
-                add
-              </div>
+                    data: { trackInfo: row, playlistId: parseInt(id) },
+                  });
+                  closeRow();
+                }}
+              />
             )}
           />
         </div>

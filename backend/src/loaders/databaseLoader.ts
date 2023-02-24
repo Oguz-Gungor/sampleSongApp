@@ -32,7 +32,7 @@ export default function databaseLoader(app: Express) {
     User.util,
     Playlist.util,
     Track.util,
-    PlaylistTrack.util,
+    PlaylistTrack.util
   ];
 
   //todo : set transaction for init methods
@@ -59,14 +59,14 @@ export default function databaseLoader(app: Express) {
         return utilInstance;
       })
     );
-    // //creates initial user
-    // await User.User.create({
-    //   name: "oguz",
-    //   email: "asd@asd.asd",
-    //   password: "123",
-    // }).catch((err) => {
-    //   LoggingMiddleware.logger.info("Error on adding default user")
-    // });
+    //creates initial user
+    await User.User.create({
+      name: "oguz",
+      email: "asd@asd.asd",
+      password: "123",
+    }).catch((err) => {
+      LoggingMiddleware.logger.info("Error on adding default user")
+    });
   };
 
   //To connect to database on startup, retry on connection error
