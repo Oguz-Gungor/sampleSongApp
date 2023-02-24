@@ -19,6 +19,17 @@ services:
       - .:/backend/app/
       - /backend/app/node_modules
 
+  frontend:
+    container_name: frontend
+    image: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+        - "3001:3001"
+    environment:
+        PORT: 3001
+
   postgres:
     container_name: postgres
     image: postgres
