@@ -12,13 +12,11 @@ import AppRoutes from "./config/RouteConfig.json";
  */
 function App() {
   return (
-    <>
       <Routes>
         <Route path={AppRoutes.ALL} element={<Login />} />
         <Route path={AppRoutes.REGISTER} element={<Register />} />
         <Route path={AppRoutes.MAIN} element={<MainPanel />} />
       </Routes>
-    </>
   );
 }
 

@@ -74,7 +74,7 @@ const TrackTableExpandRenderer = (props: any) => {
         onMouseOver={()=>dispatch({type:ApplicationReducer.ActionType.ANTHEM_PREVIEW,payload:{image:props.row.image,label:props.row.track}})}
         onMouseLeave={()=>dispatch({type:ApplicationReducer.ActionType.ANTHEM_PREVIEW,payload:null})}
       >
-        Set Anthem
+        {LabelConfig.SET_ANTHEM_LABEL}
       </Button>
       <Button
         onClick={() => {
@@ -83,7 +83,7 @@ const TrackTableExpandRenderer = (props: any) => {
           );
         }}
       >
-        Remove
+        {LabelConfig.REMOVE_LABEL}
       </Button>
     </div>
   );

@@ -18,5 +18,7 @@
   "TABLE_SEARCH_BAR_PLACEHOLDER_PREFIX": "Search for ",
   "SEND_BUTTON_LABEL": "Send",
   "PLAYLIST_SELECT_PLACEHOLDER": "Choose playlist",
-  "CANCEL_LABEL" : "Cancel"
+  "CANCEL_LABEL" : "Cancel",
+  "SET_ANTHEM_LABEL" : "Set Anthem",
+  "REMOVE_LABEL" : "Remove"
 }

@@ -29,6 +29,9 @@ services:
         - "3001:3001"
     environment:
         PORT: 3001
+    volumes:
+      - .:/frontend/app/
+      - /frontend/app/node_modules
 
   postgres:
     container_name: postgres
