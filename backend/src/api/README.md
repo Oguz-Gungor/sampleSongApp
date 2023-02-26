@@ -1,8 +1,3 @@
-
-# SongApp Backend
-
-SongApp backend to manage CRUD actions & middleware
-
 ## API Information
 
 ### Authotization & Authentication
