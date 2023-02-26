@@ -1,9 +1,9 @@
 
-# Proje Başlığı
+# SongApp Backend
 
 SongApp backend to manage CRUD actions & middleware
 
-## API Kullanımı
+## API Information
 
 ### Authotization & Authentication
 
