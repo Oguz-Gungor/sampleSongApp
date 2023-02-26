@@ -40,7 +40,7 @@ class PlaylistCreator extends ModelCreator {
           type: DataTypes.STRING(255),
         },
         count: {
-          type: DataTypes.STRING(255),
+          type: DataTypes.INTEGER
         },
       },
       {
