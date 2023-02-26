@@ -22,7 +22,7 @@ const requestSpotifyToken = async (): Promise<IRequestInterface<string>> => {
  * To set spotify token to created spotify client manager
  * @returns created token
  */
-const setSpotifyToken = async () => {
+const setSpotifyToken = async ():Promise<{token:string}> => {
   //Fetch token from Spotify API
   const result = await spotifyApi.clientCredentialsGrant();
   const token = result.body.access_token;
@@ -36,6 +36,6 @@ const setSpotifyToken = async () => {
  * Getter method to use created spotify client manager
  * @returns spotify client manager
  */
-const getSpotifyApi = () => spotifyApi;
+const getSpotifyApi = ():SpotifyWebApi => spotifyApi;
 
 export default { requestSpotifyToken, getSpotifyApi, setSpotifyToken };

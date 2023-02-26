@@ -1,5 +1,5 @@
 import { IRequestInterface } from "../interfaces/RequestInterfaces";
-import Playlist from "../model/Playlist";
+import Playlist, { IPlaylistAttributes } from "../model/Playlist";
 import User from "../model/User";
 
 
@@ -8,7 +8,7 @@ import User from "../model/User";
  * @param userId id of user whom request had been held by
  * @returns list of playlist user is related to
  */
-const getPlaylists = async (userId: any): Promise<IRequestInterface<any[]>> => {
+const getPlaylists = async (userId: number): Promise<IRequestInterface<IPlaylistAttributes[]>> => {
   return {
     status: 200,
     dto: await Playlist.Playlist.findAll({ where: { UserId: userId } }),
@@ -22,9 +22,9 @@ const getPlaylists = async (userId: any): Promise<IRequestInterface<any[]>> => {
  * @returns list of playlist user has after create operations
  */
 const addPlaylist = async (
-  playlistData: any,
-  userId: any
-): Promise<IRequestInterface<any[]>> => {
+  playlistData: { [key: string]: any},
+  userId: number
+): Promise<IRequestInterface<IPlaylistAttributes[]>> => {
   await Playlist.Playlist.create(
     { ...playlistData, UserId: userId },
     { include: [User.User] }

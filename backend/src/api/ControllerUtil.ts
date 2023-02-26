@@ -6,9 +6,9 @@ import { IRequestInterface } from "../interfaces/RequestInterfaces";
  * @param res REST response
  * @param serviceResponse result from service
  */
-export const wrapServiceResponse = async (
+export const wrapServiceResponse = async <T = any>(
   res: Response,
-  serviceResponse: Promise<IRequestInterface<any>>
+  serviceResponse: Promise<IRequestInterface<T>>
 ) => {
   const { status, dto } = await serviceResponse;
 
@@ -21,7 +21,7 @@ export const wrapServiceResponse = async (
  * @param errorHandleCallback error handler of flow
  */
 export const withErrorHandler = async (
-  callback: () => Promise<any>,
+  callback: () => Promise<void>,
   errorHandleCallback: (error: any) => void
 ) => {
    try {

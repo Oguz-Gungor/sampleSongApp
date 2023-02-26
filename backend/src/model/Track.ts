@@ -1,4 +1,4 @@
-import { Sequelize, Model, DataTypes } from "sequelize";
+import { Sequelize, Model, DataTypes, InferAttributes } from "sequelize";
 import LoggingMiddleware from "../middlewares/LoggingMiddleware";
 import { ModelCreator } from "./ModelCreator";
 import Playlist from "./Playlist";
@@ -82,4 +82,5 @@ class TrackCreator extends ModelCreator {
   }
 }
 
+export interface ITrackAttributes extends InferAttributes<Track>{} 
 export default { Track, util: new TrackCreator() };

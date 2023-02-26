@@ -51,6 +51,8 @@ function AddPlaylist({ setPostConfig }: IFetcherComponentProps<any[] | null>) {
         <>
           <Form
             onSubmit={(formData) => setPostConfig(addPlaylistConfig(formData))}
+            requiredAttributes={["name"]}
+            submitButtonLabel={LabelConfig.ADD_PLAYLIST_BUTTON}
           >
             <TextInput
               id="name"

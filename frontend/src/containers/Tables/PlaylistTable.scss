@@ -50,17 +50,24 @@
       padding: 0.2em;
       padding-left: 1em;
       padding-right: 1em;
-      &:hover {
-        border-color: #404040;
+      border-color: #404040;
+      &:hover:not(:disabled) {
         background-color: #1db954;
       }
       &:focus {
         background-color: black;
       }
     }
+    .submit-button{
+      &:disabled{
+        background-color: #1db954;
+        cursor: not-allowed;
+      }
+    }
 
     .button{
       margin-right: 1em;
+      
     }
   }
 }

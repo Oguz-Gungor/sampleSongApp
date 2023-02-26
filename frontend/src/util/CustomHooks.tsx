@@ -142,7 +142,7 @@ const useFetch = (
   // To update cycle internals with dispatched post config
   React.useEffect(() => {
     if (postConfig != null) {
-      handleRequest(postConfig);
+      handleRequest(postConfig,setPostConfig);
     }
   }, [postConfig]);
 
@@ -150,7 +150,7 @@ const useFetch = (
    * To handle request and update hook internals respect to request cycle states
    * @param specifiedResutConfig
    */
-  const handleRequest = (specifiedResultConfig: AxiosRequestConfig | null) => {
+  const handleRequest = (specifiedResultConfig: AxiosRequestConfig | null,setRequestConfig?:React.Dispatch<React.SetStateAction<AxiosRequestConfig<any> | null>>) => {
     if (specifiedResultConfig != null) {
       setLoading(true);
       setError(null);
@@ -158,6 +158,9 @@ const useFetch = (
       requestFunction(specifiedResultConfig)
         .then((response) => {
           setPayload(response.data);
+          if(setRequestConfig != null){
+            setRequestConfig(null);
+          }
         })
         .catch((error) => {
           if (error.response.status === 403) {

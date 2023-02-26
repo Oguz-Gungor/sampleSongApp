@@ -20,5 +20,6 @@
   "PLAYLIST_SELECT_PLACEHOLDER": "Choose playlist",
   "CANCEL_LABEL" : "Cancel",
   "SET_ANTHEM_LABEL" : "Set Anthem",
-  "REMOVE_LABEL" : "Remove"
+  "REMOVE_LABEL" : "Remove",
+  "ADD_PLAYLIST_BUTTON" : "Add Playlist"
 }

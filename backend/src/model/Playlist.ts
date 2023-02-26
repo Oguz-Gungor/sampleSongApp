@@ -1,4 +1,4 @@
-import { Sequelize, Model, DataTypes } from "sequelize";
+import { Sequelize, Model, DataTypes, InferAttributes } from "sequelize";
 import LoggingMiddleware from "../middlewares/LoggingMiddleware";
 import { ModelCreator } from "./ModelCreator";
 import PlaylistTrack from "./PlaylistTrack";
@@ -68,5 +68,6 @@ class PlaylistCreator extends ModelCreator {
     await Playlist.sync({alter:true});
   }
 }
+export interface IPlaylistAttributes extends InferAttributes<Playlist>{} 
 
 export default { Playlist, util: new PlaylistCreator() };

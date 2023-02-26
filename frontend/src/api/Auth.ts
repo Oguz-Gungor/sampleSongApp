@@ -1,12 +1,17 @@
 import { generateQueryParams } from "../util/UtilFunctions";
 import APIConfig from "../config/APIConfig.json";
 
+
+export interface ILoginForm{
+  username:string;
+  password:string;
+}
 /**
  * Axios config generator to handle login operation via request
  * @param data Form data to be used in login request
  * @returns Generated axios config to handle login operation
  */
-export const getLoginConfig = (data: any) => ({
+export const getLoginConfig = (data: {id:string}) => ({
   method: "get",
   url: `${APIConfig.LOGIN}${generateQueryParams(data)}`,
   headers: {},

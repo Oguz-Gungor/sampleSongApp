@@ -1,4 +1,4 @@
-import { Sequelize, Model, DataTypes } from "sequelize";
+import { Sequelize, Model, DataTypes, InferAttributes } from "sequelize";
 import { ModelCreator } from "./ModelCreator";
 import Playlist from "./Playlist";
 import bcrypt from "bcrypt";
@@ -10,7 +10,7 @@ dotenv.config();
 /**
  * Object model representation of User table
  */
-class User extends Model {
+export class User extends Model {
   public id?: number;
   public name!: string;
   public email?: string;
@@ -77,4 +77,5 @@ class UserCreator extends ModelCreator {
   }
 }
 
+export interface IUserAttributes extends InferAttributes<User>{};
 export default { User, util: new UserCreator() };

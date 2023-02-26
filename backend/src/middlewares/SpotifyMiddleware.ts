@@ -1,5 +1,8 @@
 import { NextFunction, Request, Response } from "express";
+import { InferAttributes } from "sequelize";
 import { withErrorHandler } from "../api/ControllerUtil";
+import { Entries } from "../interfaces/UtilInterfaces";
+import Track, { ITrackAttributes }  from "../model/Track";
 import SpotifyService from "../service/SpotifyService";
 
 /**
@@ -18,11 +21,11 @@ const checkSpotifyTrack = async (
   withErrorHandler(async () => {
     const spotifyApi = await SpotifyService.getSpotifyApi();
     try {
-      const item: any = await spotifyApi.getTrack(req.body.id);
-      const track = {
-        track: item.name,
-        artist: item.artists[0].name,
-        album: item.album.name,
+      const item: SpotifyApi.SingleTrackResponse = await (await spotifyApi.getTrack(req.body.id)).body;
+      const track : ITrackAttributes = {
+        track: item?.name,
+        artist: item?.artists[0].name,
+        album: item?.album.name,
         link: item?.external_urls?.spotify,
         image: item?.album?.images[0].url,
         id: item?.id,
@@ -44,7 +47,6 @@ const checkSpotifyTrack = async (
  * @param track2 
  * @returns whether tracks are same
  */
-const compareTracks = (track1: any, track2: any) => Object.entries(track1).every(([key, value]) => track2[key] === value)
-
+const compareTracks = (track1: ITrackAttributes, track2: ITrackAttributes) => (Object.entries(track1) as Entries<ITrackAttributes>).every(([key, value]) => track2[key] === value)
 
 export default { checkSpotifyTrack };

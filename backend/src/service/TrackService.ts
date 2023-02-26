@@ -1,9 +1,8 @@
 import { IRequestInterface } from "../interfaces/RequestInterfaces";
 import { sequelize } from "../loaders/databaseLoader";
 import PlaylistTrack from "../model/PlaylistTrack";
-import Track from "../model/Track";
+import Track, { ITrackAttributes } from "../model/Track";
 import User from "../model/User";
-import PlaylistService from "./PlaylistService";
 
 /**
  * To get Tracks from given playlist id
@@ -12,9 +11,9 @@ import PlaylistService from "./PlaylistService";
  */
 const getTracks = async (
   playlistId: number
-): Promise<IRequestInterface<any[]>> => {
+): Promise<IRequestInterface<ITrackAttributes[]>> => {
   //To handle transaction for geting track ids related with given playlist id and get attributes of those tracks
-  const tracks = await sequelize.transaction(async (t) => {
+  const tracks: ITrackAttributes[] = await sequelize.transaction(async (t) => {
     //Get track ids linked with given playlist id
     const trackPlayList = await PlaylistTrack.PlaylistTrack.findAll({
       where: { PlaylistId: playlistId },
@@ -34,9 +33,9 @@ const getTracks = async (
  * @returns added track
  */
 const addTrack = async (
-  trackInfo: any,
+  trackInfo: ITrackAttributes,
   playlistId: number
-): Promise<IRequestInterface<any>> => {
+): Promise<IRequestInterface<ITrackAttributes>> => {
   //to handle transaction for adding track to table and adding track to playlist-track relation
   const track = await sequelize.transaction(async (t) => {
     //add or get track
@@ -64,7 +63,7 @@ const removeTrackFromPlaylist = async (
   trackId: any,
   playlistId: number,
   userId: any
-): Promise<IRequestInterface<any>> => {
+): Promise<IRequestInterface<ITrackAttributes[]>> => {
   await PlaylistTrack.PlaylistTrack.destroy({
     where: { PlaylistId: playlistId, TrackId: trackId },
   });
@@ -80,7 +79,7 @@ const removeTrackFromPlaylist = async (
 const setAnthem = async (
   trackInfo: any,
   userId: any
-): Promise<IRequestInterface<any>> => {
+): Promise<IRequestInterface<ITrackAttributes>> => {
   await sequelize.transaction(async (t) => {
     const user = await User.User.findOne({ where: { id: userId } });
     await user?.set("TrackId", trackInfo.id);
@@ -94,7 +93,7 @@ const setAnthem = async (
  * @param userId id of requesting user
  * @returns
  */
-const getAnthem = async (userId: any): Promise<IRequestInterface<any>> => {
+const getAnthem = async (userId: number): Promise<IRequestInterface<ITrackAttributes>> => {
   const anthem = await sequelize.transaction(async (t) => {
     const user = await User.User.findOne({ where: { id: userId } });
     return await Track.Track.findOne({

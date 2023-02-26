@@ -57,7 +57,7 @@ const verifyToken = async (key: string, token: string) => {
  * @param req REST request
  * @returns user id
  */
-const getUserIDFromToken = async (req: Request) => {
+const getUserIDFromToken = async (req: Request) : Promise<any> => {
   const [key, token] = (req.headers.authorization ?? "").split(" ");
   return await jwt.verify(
     token,
