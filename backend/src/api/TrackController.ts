@@ -70,9 +70,6 @@ const removeTrackFromPlaylist = async (
     const userId = await AuthMiddleware.getUserIDFromToken(req);
     const trackId = req.query.trackId as string;
     const playlistId = parseInt(req.query.playlistId as string);
-    console.log(req.query);
-    console.log(trackId, playlistId, userId);
-
     await wrapServiceResponse(
       res,
       TrackService.removeTrackFromPlaylist(trackId, playlistId, userId)
