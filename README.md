@@ -17,3 +17,4 @@ which will build and run 3 containers:
 Frontend will run on port : 3001
 Backend will run on port : 3000
 Database will run on port :5432
+Should be changed in backend & frontend config files if docker file is changed
